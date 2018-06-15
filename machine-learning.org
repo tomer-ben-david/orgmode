@@ -19,7 +19,7 @@ matrix who's most rows are zeros
 
 *** Statistical
 
-Output = f(input) * => f(inputVariable) or f(inputVector), or f(independent variables) or Y = F(X) // X1,X2,..
+~Output = f(input) * => f(inputVariable)~ or ~f(inputVector)~, or ~f(independent variables)~ or ~Y = F(X) // X1,X2,..~
 
 *** Programming
 
