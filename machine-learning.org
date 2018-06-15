@@ -15,8 +15,16 @@ matrix who's most rows are zeros
 
 * Learning
 
+|-------------------------------------------+--------------------------------------------------------------------|
+| Item                                      | Description                                                        |
+| ~70% 30$~                                 | 70 train 30 test                                                   |
+| Learn weights                             | The learning algorithm actually learns weight of model             |
+| ~loss(perdicted != actual): LossPernalty~ | Loss Function                                                      |
+| ~SGD optimization(loss): UpdateWeights~   | Stochastic Gradient Descent update weights gradually minimize loss |
+| ~Hyperparameters~                         | Learning rate for SGD, Model Size.                                 |
+|                                           |                                                                    |
+|-------------------------------------------+--------------------------------------------------------------------|
 ** Types
-
 *** Statistical
 
 ~Output = f(input) * => f(inputVariable)~ or ~f(inputVector)~, or ~f(independent variables)~ or ~Y = F(X) // X1,X2,..~
@@ -50,10 +58,9 @@ Some can be with a teacher
 classification(input) => spam/notspam (categorical)<br />regression(input) => bitcoin price (continous outcome)
 
 ** Errors
-
 *** Error Y=f(x) + e
 
-Y = f(X) + e * => You learn a function!
+~Y = f(X) + e *~ => You learn a function!
 
 *** Bias Variance
 
@@ -80,7 +87,6 @@ List(input) => List(output) * => like grep
 
 List(input) => Output(value) * => like wc -l
 * Algorithms
-
 ** Gradiant Descent
 
 Almost every machine learning algorithm uses optimisation at it's core, optimising the target function.  Local minimum.  start with 0 `coefficient = 0.0`.  `cost = evaluate(f(coefficient))`.  Update coefficient downhill with derivative.  `coefficient = coefficient - (alpha * delta)`.  alpha learning parameter.
