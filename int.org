@@ -1,0 +1,354 @@
+*+TITLE: Int
+
+* CS Patterns
+
+|------------------------------------------------------------------------+------------------------|
+| Details                                                                | Item                   |
+|------------------------------------------------------------------------+------------------------|
+| ~[a-z]: [65,90], [A-Z]: [97-122], Space: [32]~                         | Ascii                  |
+|                                                                        |                        |
+|                                                                        | Java                   |
+| ~Character.isLetter(c)~                                                | is char letter         |
+| ~String.split(" ")~                                                    | Split to works         |
+|                                                                        |                        |
+| ~Arrays.toString(new int[] {1,2,})~                                    | Print Array            |
+| ~Arrays.deepToString(…)~                                               | Print 2 dim array      |
+| ~Arrays.sort(arr)~                                                     | Sort Array             |
+| ~int[][] my2dimarr = new int[3][3]~                                    | Initialize 2 dim array |
+| ~PriorityQueue<Integer> q = new PriorityQueue<>(); q.add(2); q.poll()~ | Heap PriorityQueue     |
+|                                                                        |                        |
+|------------------------------------------------------------------------+------------------------|
+
+
+1. **Brute force**
+2. **Massage input** if can (sort, precalc, cache, turn to graph, turn to priority-queue/heap, HashMap, Set)
+3. If cannot massage input then `greedy algorithm`
+4. Try being `greedy` in O(n) see if works.
+5. Recursion, first item either in result or not, if yes, do this if not do that. 
+6. Dummy trick compare - str1, str2, str3? maybe instead of combinations you can just compare the length of str1+str2 to the length of str3?
+7. **impossible** what is the BEST HEAVEN data structure you would want to solve it? Now prepare that DS one time even with high calculation cost and use it to solve the problem.  [http://www.ardendertat.com/2011/10/17/programming-interview-questions-8-transform-word/](http://www.ardendertat.com/2011/10/17/programming-interview-questions-8-transform-word/)
+8. **Mental jump** convert input data structure to the best one you want! cost is one time then all lookups and you always have that output data structure, think you have hadoop.
+
+* Signs you need recursion
+
+1. **Permutations** The problem requires many permutations like 2^n
+2. **impossible** It looks impossible to solve the problem.  Let recursion help you. 
+
+3. **Impossible** cannot get answer? When questions looks impossible most probably recursion.  In this case you must get some help from recursion friend to reduce the problem.  Impossible question is a big hint we need a recursion, we can't boggle our mind around it.
+
+* Signs you need to massage input
+
+Impossible to solve, too many options, you need to turn the input data structure into the dream data structure that would help you resolve the question.  As you do it one time, precalc, and then for each test function you just run on the new data structure.
+
+* Coding Patterns
+
+1. Use **`PriorityQueue`** instead of Max/Min heap!!!! This will save you a huge load of time as you need a heap in rather many of the questions.
+2. Use `Arrays.binarySearch` - to find!!
+3. Use `Arrays.toList(new int {1, 2, 3})` to turn an array to list.
+4. `assert(condition for tests)` with `-ea` flag to turn it on.
+5. Throw `IllegalArgumentException` for quick validation.
+6. Use `while (cur.next() != null)` in linkedList to avoid holding two pointers `prev` and `cur`.
+7. `BFS` always finds the shortest path.
+8. `DFS` uses less space.
+9. Use `ArrayQueue` instead of `ArrayList` for efficient `FIFO` in arrayList remove would be `O(n)`
+10. Use `Collections.reverse` to reverse a `list` 
+11. `DFS` and `BFS` both take `O(m+n)`
+12. `BFS` store `nodesAlreadyVisited` don't revisit them wasting time in shortest path finding.
+
+* CS Literacy
+
+1. **Random Forests** => machine learning, take "average" of multiple decision trees as your result, avoic noise.
+2. **DFS** => Init: Stack, Push head ==> Loop while stack not empty ==> Pop one, Mark it, push all adjucent vertexes to stack.  O(V + E) [https://www.youtube.com/watch?v=1MBr9swUPE8](https://www.youtube.com/watch?v=1MBr9swUPE8)
+3. **merkel trees** tree of hashes you send it in between the nodes, so that nodes can very quickly know if they have the wrong data, so they sync.
+4. **vector clocks** logical clocks, think git and distributed resolution, although we are distributed each commit get's a hash and we can fix collisions.  
+
+* CS Interview Resources
+
+| Topic                                    | Category | Resource                                 |
+| ---------------------------------------- | -------- | ---------------------------------------- |
+| CS Programming Interview querstions and good answers |          | http://www.ardendertat.com/2011/10/18/programming-interview-questions-9-convert-array/ |
+|                                          |          |                                          |
+|                                          |          |                                          |
+
+
+
+* Sort
+** QuickSort
+   recurse: choose pivot, forwardI++, backwardI++, swap if left smaller pivot nad right bigger pivot.
+* BFS
+
+*+BEGIN_SRC java
+Lpublic int findeftMostNode(TreeNode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    while (!queue.isEmpty()) {
+        root = queue.poll();
+        if (root.right != null)
+            queue.add(root.right);
+        if (root.left != null)
+            queue.add(root.left);
+    }
+    return root.val;
+}
+*+END_SRC
+
+** queue
+
+*** insert root
+
+**** repeat
+
+***** pop node
+
+***** insert children
+
+* BTree
+   In computer science, a B-tree is a self-balancing tree data structure that keeps data sorted and allows searches, sequential access, insertions, and deletions in logarithmic time. The B-tree is a generalization of a binary search tree in that a node can have more than two children. ![btree](http://www.virtualmachinery.com/images/tree.gif)
+* infix
+
+** postfix/prefix
+
+*** convert to postfix/prefix
+
+postfix and prefix do not need parenthasis
+A + B * C => B C * +
+to convert: operands stay in same relative places, only operators change positions.
+
+**** no need parenthasis
+
+*** evaluate
+
+push operands as long as we have operands once we have operator pop 2 operands and run operation on them.
+
+* Resources
+
+** Problem solving with algorithms and data structures
+
+online concise python book
+
+* Java
+** General
+*** ~jps -l~ Show current java processes.
+** Performance
+*** Measure
+**** cpu
+***** measurments 
+****** user cpu
+       you want: linear relation: increase load on system and increased user cpu.
+****** system cpu
+       1. also known as kernel cpu.
+       1. reduce - time spent on system cpu is time we don't have on user cpu, > 5% oepn eye on it.
+****** idle time 
+
+***** HOWOTO 
+****** vmstat
+       `vmstat 5` Global cpu stats
+         1. `r` - run queue threads waiting to run.
+         1. `si/so` - paging.
+****** mpstat 
+       `mpstat -P ALL` to see virtual cpu stats
+**** virtual memory 
+     if your heap memory is in virtual memory gc would be very slow and gc pauses will take long time
+**** process 
+***** context switching
+      high voluntary context swiching can be an indication of waiting for locks, io, contention on locks and io.
+****** Voluntary
+****** High Voluntary 
+       Java apps that are experiencing lock contention. They use high cpu.
+       `pidstat -w -I -t -p 23132 5` - 23132 is pid, more than 5% of available clock cycles on voluntary context switches is likely suffering from lock contention.
+       General tule of thumb you have 80,000 clock cycles.
+       `cswch` - involuntary context switches, this means locks. Sum up all the involunary numbers for the process and divide by 4 because of 4 core, then multiply by by 80,000 shouldnt be more than 5%, compare to how many clock cycles we have `more /proc/cpuinfo` Mhz is how many clock cycles we have
+       `nvcswch` - non vountary involuntary context switches
+****** Involuntary 
+       more threads than can run.
+***** Scheduling Queue 
+      goes together with involuntary context switching we have more threads than can be handled.
+      1. When thread is ready to run it's placed on the `run queue`
+      1. Run Queue Size > Num VCPU * 2 => System is slow
+**** GC
+     1. gc scans large chunks of memory, if we have paging, it would be much slower, so check si/so in vmstat
+     ![gcgenerations](https://tinyurl.com/gcyoungold)
+     1. ~-XX:+PrintGCDetails~ logs: ~-Xlogcc~ - 
+     1. ~-XX:+PrintGCDateStamps~ or ~-XX:+PrintGCtimeStamps~
+     1. ~-XX:+PrintGCApplicationStoppedTime~ How much time did the application stop waiting for gc or safepoint. important.
+     1. ~-XX:+PrintApplicationConcurrentTime~ How much time did the application run between the gc and safepoints.  important.
+     1. ~-XX:+PrintTenuringDistribution~ - How much time objects stay alive in your generation spaces.  "new threshold 1 (max 15)" means at age 1 it's promotion objects to old generation space. Meaning survivor space is not large enough so it was choosing age 1.
+     1. ~-XX:+PrintAdaptiveSizePolicy~ (Parallel GC or G1 Only)
+     1. ~VisualVM/VisualGC~ remote to troubleshoot remotely, install ~jstatd~ on server.  Requires to run with same javaapp user, and policy, jstatd policy file (search for it). Then start jstatd remotely.  Then from client ~jstat -gcutil pid@remoteip 2000~
+***** Sections 
+****** Young
+       Moving them back and forth between s0 and s1.  Also known as from and to space.
+******* Eden
+        1. Most objects die here.
+        1. When eden is full we have minor GC which copies to s0 or s1 in addition in minor gc objects are moved from s1 to s0 and back.
+        1. Move objects to survivor (s0).
+******** TLAB's
+         each thread has it's own space to allocate data so eden is split and each thread has it's own space.
+![eden tlabs](http://i.umumble.com/img/topic-1-1506586679.png)
+******* Survivor
+        ALL objects from s0 are movbed to s1 on minor gc, all objects from s1 are moved to s0 on minor gc.  At any point in time only s0 or s1 has objects.  The other one is empty.
+******** From Survivor
+******** To Survivor 
+****** Old
+       moving to here from survivor after a couple of minor gc are moved here to old.  Here we have the full GC. We try to have objects not arrive to old so that they won't have full gc.
+****** Permanent 
+       VM Meta Classes
+***** Tools 
+****** VisualVM
+******* VisualGC Plugin
+***** Resources
+      [[https://www.safaribooksonline.com/library/view/advanced-java-performance/9780134653273/ajph_01_01.html?autoStart=True][Safari Java Performance LiveLessons]]
+**** Network 
+***** nicstat
+      `nicstat -i eth0 5`
+**** DiskIO 
+     iostat -xm 5 : include io%util we are interested in it.
+
+
+https://www.safaribooksonline.com/library/view/java-performance-livelessons
+** concurrent
+
+*** delayed operation
+
+```java
+Scheduler scheduler = Executors.newSingleThreadScheduledExecutor()
+scheduler.schedule(new Runnable() {
+      override def run(): Unit = {
+        Some Code
+      }
+    }, 1, TimeUnit.SECONDS)
+```
+** URLConnection
+
+```java
+URL url = new URL("http://example.com");
+HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+connection.setRequestMethod("GET");
+connection.connect();
+
+int code = connection.getResponseCode();
+```
+
+** gc
+
+```markdown
+![gcgenerations](https://tinyurl.com/gcyoungold)
+```
+
+*** young
+
+Moving them back and forth between s0 and s1.  Also known as from and to space.
+
+**** eden
+
+```markdown
+1. Most objects die here.
+1. When eden is full we have minor GC which copies to s0 or s1 in addition in minor gc objects are moved from s1 to s0 and back.
+1. Move objects to survivor (s0).
+```
+
+***** TLAB's
+
+```markdown
+each thread has it's own space to allocate data so eden is split and each thread has it's own space.
+![eden tlabs](http://i.umumble.com/img/topic-1-1506586679.png)
+```
+
+**** survivor
+
+ALL objects from s0 are movbed to s1 on minor gc, all objects from s1 are moved to s0 on minor gc.  At any point in time only s0 or s1 has objects.  The other one is empty.
+
+***** from survivor
+
+***** to survivor
+
+*** old
+
+moving to here from survivor after a couple of minor gc are moved here to old.  Here we have the full GC. We try to have objects not arrive to old so that they won't have full gc.
+
+*** Permanent
+
+VM Meta classes.
+
+*** resources
+
+https://www.safaribooksonline.com/library/view/advanced-java-performance/9780134653273/ajph_01_01.html?autoStart=True
+
+*** tools
+
+**** visualvm
+
+***** visualgc plugin
+** performance troubleshooting
+
+*** measure
+
+**** cpu
+
+***** user cpu
+
+you want: linear relation: increase load on system and increased user cpu.
+
+***** system cpu
+
+also known as kernel cpu.
+
+****** reduce
+
+time spent on system cpu is time we don't have on user cpu
+
+***** idle time
+
+**** virtual memory
+
+if your heap memory is in virtual memory gc would be very slow and gc pauses will take long time
+
+**** process
+
+***** context switching
+
+high voluntary context swiching can be an indication of waiting for locks, io, contention on locks and io.
+
+****** voluntary
+
+****** involuntary
+
+more threads than can run.
+
+***** scheduling queue
+
+goes together with involuntary context switching we have more threads than can be handled.
+
+*** resources
+
+* Softskills
+** meetings
+
+*** end
+
+you already konw how you want the meeting to end, before meeting and during meeting you should stick as fast as possible to how the meeting should and and put your voice.
+
+* Math
+** mod
+
+only the reminder so 2 % 3 is 1 and 4 % 3 is 1
+
+* WORK
+** amazon
+*** machine learning
+**** models lifecycle
+
+release process from data scientists to production
+
+**** measure effectiveness
+
+effectiveness of models are they good?
+* Scala
+|---------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------|
+| code                                                                                              | desc                                                                    |
+|---------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------|
+| ~def wrapCodeWithLog(blockOfCode: () => String): () => String = log.info("before");blockOfCode()~ | function that wraps block of code with logging, just wraps does not run |
+* Status
+** TODO quick sort [[https://repl.it/@TomerBen1/KLargestElement][Quick Sort Code]]
+** TODO [[http://www.ardendertat.com/2011/10/27/programming-interview-questions-10-kth-largest-element-in-array/][Arden K Largest Element]]
+

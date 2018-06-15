@@ -1,0 +1,19 @@
+#+TITLE: AWS
+
+* Networking
+** VPC
+   You create internal private networks, you can create multiple of them like ~10.2.0.0/16~ so that systems which are related are correlated in network.
+*** Subnet
+    1. ~10.2.0.0/24~ When you launch a VM you launch it into a subnet and not directly into VPC so you have to have subnets in your VPC's. So what you do is that your VPC is cross multiple availability zones and each subnet is in each availability zone.
+    1. Subnets are specific to an availability zone.
+
+** Gateway
+    1. Traffic flow from one vpc to somewhere else is with routing to and from the internet - internet gateway allows 2 different networks to share traffic.
+    1. route table - such that traffic routed to vpc goes to gateway.
+    1. internet <-> our gateway <-> our subnet.
+** NACL
+   Network access control list, firewall for subnets.
+** Security Groups
+   "Firewall" for a machine.
+** Summary
+   Routing --> NACL --> Security groups.

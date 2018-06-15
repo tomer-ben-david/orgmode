@@ -1,0 +1,22 @@
+#+TITLE: Linux
+
+* Files
+** File Descriptors
+   1. File oriented file system everything is a file.
+   1. Every process keeps a table of file descriptors that shows files that are currently in use.  Example ~STDIN~ ~STDOUT~
+   ~ls /proc/$PID/fd/~ This is what the process is doing ~0~ is stdin, ~1~ is stdout ~7,8~ network for interprocess communication.
+* Performance
+** vmstat
+   1. `vmstat 5`
+
+| metric | meaning                  |
+|--------+--------------------------|
+| us     | time spent on user cpu   |
+| sy     | time spend on system cpu |
+|        |                          |
+* Shell
+   ~grep -B 1~ - grep results one line before.
+* Docker
+** Docker Swarm
+*** Local in mac
+    http://callistaenterprise.se/blogg/teknik/2017/12/18/docker-in-swarm-mode-on-docker-in-docker/

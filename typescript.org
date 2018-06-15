@@ -1,0 +1,28 @@
+#+TITLE: TypeScript
+
+* Database
+** TypeORM
+#+BEGIN_SRC javascript
+async function runWithTransaction(connection: Connection) {
+
+    const user = new User();
+    user.firstName = "Timber";
+    user.lastName = "Saw";
+    user.age = 26;
+
+    const queryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    await queryRunner.manager.save(user);
+    await queryRunner.commitTransaction();
+
+    // less explicit transaction
+
+    await getManager().transaction(async transactionEntityManager => {
+       await transactionEntityManager.save(user1);
+       await transactionEntityManager.save(user2);
+       // throw new Error("some error");  // Check that no user is added if we have exception.
+    });
+
+}
+#+END_SRC

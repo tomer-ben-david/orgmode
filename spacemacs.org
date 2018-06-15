@@ -1,0 +1,153 @@
+#+TITLE: Spacemacs and orgmode
+
+* SpaceMacs
+** Installation 
+   1. `brew cask install basictex` - so can export presentations.
+   ~dotspacemacs-additional-packages '(vimish-fold htmlize)~ - Add packages to install on startup. 
+** OrgMode
+
+|------------+---------------------|
+| item       | shortcut            |
+|------------+---------------------|
+| ~S-M-LEFT~ | Table Delete column |
+|------------+---------------------|
+
+*** Organization
+**** M-LEFT/RIGHT: Move item to left or right child parent.
+
+
+ * OrgMode
+  ** Links
+  *** Backspace - present internals of link
+  [[http://google.com][some googlew]]
+**** S-TAB : Collapse Expand All. 
+*** Tables 
+**** Insert: first write the below then | - TAB, click tab after each row will sort it out. 
+| Some        | Some        |
+| -           | sdkfjsk     |
+| sldkjflksdj | sdlfkjsldfj |
+|             |             |
+***** aslfjlksjf 
+
+Table with sum with column name x
+
+| task       | num |
+| dothis     |   1 |
+| dothat     |   0 |
+| do this    |   4 |
+| lskjfklsjd |   1 |
+| sum        |   2 |
+| sum        |   8 |
+| ^          |   x |
+|------------+-----|
+#+TBLFM: $x=vsum(@2..@-1)
+C-c C-c to recalculate sum
+
+
+*** Links
+**** C-c C-l: Create link 
+**** C-c C-o: Open link 
+**** Backspace: present underlying link 
+**** sdjfslkfj 
+**** to do to do this. 
+*** Source code 
+#+BEGIN_SRC scala
+def a = 2
+#+END_SRC
+*** Todo
+**** TODO this is todo item. C-c C-t change state.
+**** Add time date: C-c C-d then S-RIGHT/LEFT 
+**** Archive stuff. 
+** Code
+   | Key      | Function    |
+   | ~<s TAB~ | Insert Code |
+   |          |             |
+*** Tasks
+|--------------+----------|
+| What         | Shortcut |
+|--------------+----------|
+| Archive Task | ~C-c $~  |
+|--------------+----------|
+** Get Help
+   1. SPC h d f user config
+** Basic
+   1. `M-x freetext` when you forget how to do stuff search for it like ctrl-shift-a
+   1. `SPC w p m` see messages for Troubleshooting.
+** Internals
+   1. `SPC f e d` - View configuration
+** Files
+   1. `SPC f y` - Show current file path
+   1. `SPC f f` - Can create new files
+** Edit
+|-----------------------+----------------|
+| Shotcut               | Task           |
+|-----------------------+----------------|
+| ~:%s/fromStr/toStr/g~ | Search Replace |
+| ~v M-h~               | Select block   |
+|-----------------------+----------------|
+   1. `[SPC t l]` - Toggle line wrap
+   1. `C-c C-x C-w` to cut section then paste in new place with: `C-c C-x C-y`
+** Crazy
+  * ~:112,112!ls ~/TAB~ then RET you get the content to lines 112 totally crazy
+*** code 
+    1. ~<sTAB~ (in insert mode).
+    1. You need to be in insert mode.
+*** Evaluate source!
+  * `C-x org publish`
+    1. Publish your orgs to html can create another .org as sitemap
+
+#+BEGIN_SRC python :results output
+for i in range(100):
+  print(1) # C-c C-c
+
+#+END_SRC
+*** `SPC SPC eshell` Shell 
+** Navigation
+   1. ~SPC j i~ - Move between headers.
+   1. ~C-g~ - Escape / Quit
+** View
+   1. `SPC z x` +- # => zoom in out
+** Packages
+   1. `M-x package-install ox-gfm`
+** Export 
+*** Export
+**** C-c C-e
+   1. to markdown: `M-x` -> customize-option -> org-export-backends checkbox on md OR
+   1. Add to (defun dotspacemacs/user-config () in ~/.spacemacs which can be accessed by `SPC f e d` (setq org-export-backends '(ascii beamer html latex md))
+   1. Install Latex for beamer presentation and pdf export: http://www.tug.org/mactex/mactex-download.html
+*** =ox-twbs= - export dgcs to this!!
+*** always confirm 
+    ~C-x~ ~set variable~ ~org-confirm-babel-evaluate~ set to ~nil~  
+** Resources
+  [[https://gist.github.com/drj42/1755992][orgmode reference card]]  
+** .dotfiles 
+   1. Spacemacs:
+#+BEGIN_SRC 
+;; Additional...
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
+
+;; active Org-babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(;; other Babel languages
+   (plantuml . t)))
+
+(setq org-plantuml-jar-path
+      (expand-file-name "~/.emacs.d/plantuml.jar"))
+#+END_SRC      

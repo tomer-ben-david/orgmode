@@ -1,0 +1,113 @@
+#+TITLE: SQL
+
+* Intuition
+   1. Create queries that build opon bottom up like functional. ~SELECT ... WHERE p.payment_id = ( subquery )~
+   1. Can I write a simpler query that gives me some kind of the data.  Yes? it's your subquery use it with WITH.
+   1. Always give tables names.
+   1. Treat subqueries as functions you call them and they return values.
+
+| SQL                   | Meaning |
+| ~SELECT x > avg(col)~ |         |
+| ~SELECT f.* FROM film f WHERE f.replacement_cost > (SELECT AVG(f.replacement_cost) FROM film f2)~ | Filter without multiple where queries |
+| ~
+
+* Select
+   1. Alias
+
+* FROM
+   1. Alias: ~SELECT * FROM payment p~ - Alias is p after table name.
+
+* Aggregation
+   ~SELECT p.payment, COUNT(*) FROM payment p GROUP BY p.payment -- as we have aggregated COUNT(*), non aggregated columns such as p.payment need to be aggregated by GROUP_BY~
+   ~SELECT p.payment, COUNT(*) FROM payment p -- wont work, no aggergation for p.payment~
+
+** HAVING
+   You cant use WHERE on aggregate colums
+   ~SELECT COUNT(*) FROM X HAVING COUNT(*) = 1...~
+   You can put a whole SELECT query in the HAVING clause.
+
+* JOINS
+
+  1. JOIN = INNER JOIN
+  1. ~SELECT table1alias.field1, table2.field1 FROM table1 table1alias JOIN table2 ON table1alias.date = table2.date~
+  1. Note that you say **JOIN** and then you have to specify on which field to join so you use **ON**
+
+** LEFT JOIN
+
+   1. Get all data from first query (left of join) even though you have empty cells on the right table. according to the **ON** condition.
+
+#+BEGIN_SRC sql
+SELECT f.film_id, f.title, i.store_id
+FROM film f
+LEFT JOIN inventory i ON i.film_id = f.film_id;
+
+SELECT
+  f.film_id, f.title,
+  i.store_id,
+  COUNT(distinct r.rental_id) as rentals
+FROM film f
+  LEFT JOIN inventory i ON i.film_id = f.film_id;
+  LEFT JOIN rental r ON r.inventory_id = i.inventory_id
+GROUP BY 1,2,3
+#+END_SRC
+
+  1. left rules right can be null
+  1. 1 left repeat :: n right
+  1. each left table row will repeat for each of the right table which meats the condition on ON
+
+** SELF JOIN
+   1. SELECT, (SELECT)
+
+#+BEGIN_SRC sql
+SELECT fields, (SELECT fields fieldx == parent fields x) as subqueryfield
+
+SELECT r.customer_id, MIN(r.rental_id) as first_order_id,
+ ( SELECT r2.rental_date FROM rental r2 WHERE r2.rental_id = min(r.rental_id)) as first_rental_date
+FROM rental r
+GROUP BY r.customer_id;
+#+END_SRC
+
+  **Tip: always give tables name**
+
+** AND OR
+   1. For further filtering you can just use AND OR inside the JOIN clause.
+
+* SUBQUERY
+
+   **Tip: Imagine sub queries as functions, you then treat their output as tables and query it.**
+
+#+BEGIN_SRC sql
+select * FROM
+(SELECT t.customer_id, COUNT(*) FROM (
+  SELECT DISTINCT r.customer_id, s.store_id
+  FROM rental r
+    LEFT JOIN staff s ON s.staff_id = r.staff_id
+  ORDER BY 1
+) t
+
+GROUP BY 1) t2)
+
+WHERE t2.customer_id < 10;
+#+END_SRC
+
+** WITH
+
+-- instead of nesting subqueries you do this
+
+#+BEGIN_SRC sql
+WITH t1 AS (SELECT * FROM sometable)
+select * from t1;
+#+END_SRC
+
+-- you can do everything with these tables, join, ...
+
+* Couchbase
+
+|----------------------------------------------------------------------------------+-----------------|
+| Item                                                                             | Description     |
+|----------------------------------------------------------------------------------+-----------------|
+| ~SELECT META(mybucket).id FROM diy WHERE META(mybucket).id LIKE "MyKeyPrefix%";~ | Search for keys |
+|----------------------------------------------------------------------------------+-----------------|
+
+* Resources
+** Safari sql course
