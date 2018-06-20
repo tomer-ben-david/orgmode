@@ -698,17 +698,20 @@ then add /Users/tomer.bendavid/.local/bin to PATH on bash_profile
 ```
 
 * python
-|----------------------------------------+-----------------|
-| command                                | description     |
-|----------------------------------------+-----------------|
-| ~conda create --name testenv~          |                 |
-| ~conda activate testenv~               |                 |
-| ~conda env list~                       |                 |
-| ~conda installs spyder~                |                 |
-| ~conda activate testenv~               |                 |
-| ~conda install -c conda-forge pyspark~ | install pyspark |
-|                                        |                 |
-|----------------------------------------+-----------------|
+|---------------------------------------------------------------+------------------------------------------------------------|
+| command                                                       | description                                                |
+|---------------------------------------------------------------+------------------------------------------------------------|
+| ~conda create --name testenv~                                 |                                                            |
+| ~conda activate testenv~                                      |                                                            |
+| ~conda env list~                                              |                                                            |
+| ~conda installs spyder~                                       |                                                            |
+| ~conda activate testenv~                                      |                                                            |
+| ~conda install -c conda-forge pyspark~                        | install pyspark                                            |
+| ~/Users/tomer.bendavid/anaconda3/envs/testenv1/bin/python3.6~ | python interpreter for intellij spyder when using anaconda |
+| ~/Users/tomer.bendavid/anaconda3/bin/python~                  | Soft link i think points to current python                 |
+| ~requests.get('http://someurl.csv`)~                          | import requests very convinient for data download          |
+|                                                               |                                                            |
+|---------------------------------------------------------------+------------------------------------------------------------|
 ** urllib2
 
 *** getfile

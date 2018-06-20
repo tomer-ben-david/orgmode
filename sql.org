@@ -6,10 +6,21 @@
    1. Always give tables names.
    1. Treat subqueries as functions you call them and they return values.
 
-| SQL                   | Meaning |
-| ~SELECT x > avg(col)~ |         |
-| ~SELECT f.* FROM film f WHERE f.replacement_cost > (SELECT AVG(f.replacement_cost) FROM film f2)~ | Filter without multiple where queries |
-| ~
+| SQL                                                                                                   | Meaning                               |
+| ~SELECT x > avg(col)~                                                                                 |                                       |
+| ~SELECT f.* FROM film f WHERE f.replacement_cost > (SELECT AVG(f.replacement_cost) FROM film f2)~     | Filter without multiple where queries |
+| ~SELECT values FROM first_name INNER JOIN second_table ON first_table.somefield = second_table.field~ | Inner join                            |
+| ~SELECT values FROM first_table AS t1 INNER JOIN second_table AS t2~                                  | Alias tables                          |
+| ~SELECT values FROM (SELECT ...) as t2 WHERE name = t2.name~                                          | Replace any field with select         |
+|                                                                                                       |                                       |
+
+#+BEGIN_SRC sql
+-- Inner JOIN
+SELECT RecipeTitle, Preparation, RecipeClassDescription
+FROM Recipe_Classes
+INNER JOIN Recipes
+ON Recipe_Classes.RecipeClassID = Recipes.RecipeClassID
+#+END_SRC
 
 * Select
    1. Alias

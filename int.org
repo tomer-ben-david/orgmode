@@ -127,6 +127,48 @@ push operands as long as we have operands once we have operator pop 2 operands a
 online concise python book
 
 * Java
+  ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │                          JVM Architecture (http://blog.jamesdbloom.com/JVMInternals.html)                           │
+  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ┌──────────────────────────────────────┐    ┌──────────────────────────────────────┐  ┌───────────────────────────────┐
+  │                Stack                 │    │               Non Heap               │  │             Heap              │
+  │ ┌──────────────────┐                 │    │                                      │  │ ┌───────────┐      ┌─────┐    │
+  │ │      Thread      │                 │    │┌───────────┐┌───────────────────────┐│  │ │   Young   │      │ Old │    │
+  │ └──────────────────┘                 │    ││Code Cache ││ Permanent Generation  ││  │ ├─────┬─────┤      ├─────┤    │
+  │ ┌──────────────────┐                 │    │├───────────┤├───────────────────────┤│  │ │  E  │     │      │     │    │
+  │ │ Program Counter  │                 │    ││           ││┌───────────┐          ││  │ │  d  │  S  │      │     │    │
+  │ └──────────────────┘                 │    ││           │││ Interned  │          ││  │ │  e  │  u  │      │     │    │
+  │ ┌───────────┐     ┌───────────┐      │    ││           │││  Strings  │          ││  │ │  n  │  r  │      │     │    │
+  │ │   Stack   │     │  Native   │      │    ││           ││└───────────┘          ││  │ │     │  v  │      │     │    │
+  │ │           │     │   Stack   │      │    ││           ││┌───────────┐          ││  │ │  S  │  i  │      │     │    │
+  │ │           │     │           │      │    ││           │││Method Area│          ││  │ │  p  │  r  │      │     │    │
+  │ │           │     │           │      │    ││           │││┌────────┐ │          ││  │ │  a  │  o  │      │     │    │
+  │ │           │     │           │      │    ││           ││││        ├┐│          ││  │ │  c  │  r  │      │     │    │
+  │ ├───────────┤     ├───────────┤      │    ││           │││└┬───────┘││          ││  │ │  e  │  s  │      │     │    │
+  │ ├───────────┤     ├───────────┤      │    ││           │││ └───┬────┘│          ││  │ │     │     │      │     │    │
+  │ ├─────┬─────┤     ├───────────┤      │    ││           ││└─────┼─────┘          ││  │ ├─────┴─────┤┌─────┴─────┤    │
+  │ └─────┼─────┘     └───────────┘      │    ││           ││      │                ││  │ │   Minor   ││   Major   │    │
+  │       │                              │    │└───────────┘└──────┼────────────────┘│  │ └───────────┘└───────────┘    │
+  │       │                              │    │                    └─────┐           │  │                               │
+┌─┼───────┘                              │    │                          │           │  │                               │
+│ └──────────────────────────────────────┘    └──────────────────────────┼───────────┘  └───────────────────────────────┘
+│                                                                        │                                               
+│                                                                        ◎                                               
+│ ┌────────────────────────────────────────────────┐    ┌────────────────────────────────┐                               
+│ │Frame              ┌─────────────┐┌────────────┐│    │Class Data                      │                               
+│ │┌────────┐┌───────┐│Operand Stack││  Current   ││    │┌─────────────┐ ┌─────────────┐ │                               
+│ ││ Return ││ Local │├─────────────┤│   Class    ││    ││  Run-Time   │ │ Method Code │ │                               
+└─◎│ Value  ││ Vars  │├─────────────┤│  Constant  ││────▶│Constant Pool│ │             │ │                               
+  │└────────┘└───────┘└─────────────┘│    Pool    ││    │├─────────────┤ │             │ │                               
+  │                                  │ Reference  ││    ││String Consts│ │             │ │                               
+  │                                  └────────────┘│    │├─────────────┤ │             │ │                               
+  └────────────────────────────────────────────────┘    ││ Num Consts  │ │             │ │                               
+                                                        │├─────────────┤ │             │ │                               
+                                                        ││ Class Refs  │ │             │ │                               
+                                                        │├─────────────┤ │             │ │                               
+                                                        ││ invoke dyn  │ │             │ │                               
+                                                        │└─────────────┘ └─────────────┘ │                               
+                                                        └────────────────────────────────┘                               
 ** General
 *** ~jps -l~ Show current java processes.
 ** Performance
@@ -348,6 +390,97 @@ effectiveness of models are they good?
 | code                                                                                              | desc                                                                    |
 |---------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------|
 | ~def wrapCodeWithLog(blockOfCode: () => String): () => String = log.info("before");blockOfCode()~ | function that wraps block of code with logging, just wraps does not run |
+
+#+BEGIN_SRC scala
+scala
+
+mockito
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Mockito._
+
+with MockitoSugar
+
+val mockClient = mock[Client]
+when(mockClient.status).thenReturn(200)
+play
+json
+implicit val writesMutableListBuffer: Writes[ListBuffer[(String, mutable.ListBuffer[T])]] = new Writes[ListBuffer[(String, mutable.ListBuffer[T])]] {
+ 
+    def writes(q: ListBuffer[(String, mutable.ListBuffer[T])]): JsValue = {
+      Json.obj("myobj" -> q.map(
+        item => Json.obj(
+          "listbuffer-key" -> Json.toJson(item._1),
+          "listbuffer-values" -> Json.toJson(item._2)
+        )
+      )
+      )
+    }
+  }
+ 
+  val someReader = new Reads[MyObj] {
+    override def reads(json: JsValue): JsResult[MyObj] = {
+      val fieldValue = (json \ "someField").as[String]
+    }
+  }
+ 
+  // for simple case classes just define the default writes/reads
+ 
+  case class Customer(name: String)
+  object Customer {
+    implicit val customerJsonWriter = Json.writes[Customer]
+    implicit val customerJsonReader = Json.reads[Customer]
+  }
+ 
+  // for inheritance define case object for the train with pattern matching
+ 
+  object RequestData {
+    implicit val requestDataWriter = new Writes[RequestData] {
+      override def writes(o: RequestData): JsValue = {
+        o match {
+          case stringRequestData:StringRequestData => StringRequestData.stringRequestDataWriter.writes(stringRequestData)
+          case _ => throw new IllegalArgumentException(s"requestDataWriter: No writer for $o")
+        }
+      }
+    }
+ 
+    implicit val requestDataReader = new Reads[RequestData] {
+      override def reads(json: JsValue): JsResult[RequestData] = {
+        val requestType = (json \ "requestType").as[String]
+        requestType match {
+          case "stringRequestData" => StringRequestData.stringRequestDataReader.reads(json)
+          case _ => throw new RuntimeException(s"requestDataReader: does not support json: $json with type $requestType")
+        }
+      }
+    }
+  }
+ 
+  // Map to json and json to map, array
+  implicit val moreDetailsJsonWriter = new Writes[Map[String, SomeValue]] {
+    override def writes(o: Map[String, SomeValue]): JsValue = {
+      Json.arr(o.map( {
+        case (key, value) => key -> SomeValue.writes(value)
+      }))
+    }
+  }
+ 
+  implicit val moreDetailsJsonReader = new Reads[Map[String, SomeValue]] {
+    override def reads(json: JsValue): JsResult[Map[String, SomeValue]] = {
+      val mapAsJson = json.as[JsArray]
+      val kvSeq = mapAsJson.value.flatMap { entry =>
+        val keyValSeq = entry.asInstanceOf[JsObject].fields
+ 
+        keyValSeq.map(keyValEntry => keyValEntry._1.asInstanceOf[String] ->
+          SomeValue.reads(keyValEntry._2).get)
+ 
+      }
+      JsSuccess(kvSeq.toMap)
+    }
+  }
+ 
+  // Take first key of a json { "somekey": "somevalue" } will return "somekey"
+  json.asInstanceOf[JsObject].fields(0)._1
+
+#+END_SRC
 * Status
 ** TODO quick sort [[https://repl.it/@TomerBen1/KLargestElement][Quick Sort Code]]
 ** TODO [[http://www.ardendertat.com/2011/10/27/programming-interview-questions-10-kth-largest-element-in-array/][Arden K Largest Element]]

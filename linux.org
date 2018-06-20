@@ -1,5 +1,21 @@
 #+TITLE: Linux
 
+* CheatSheet
+
+| command                                                         | desc                                                                                              |
+| ~awk '{print $0}'~                                              | print entire line, 07.46.199.184 [28/Sep/2010:04:08:20] "GET /robots.txt HTTP/1.1" 200 0 "msnbot" |
+| ~echo 'this is a test' \vert awk '{print $3}'~                  | a                                                                                                 |
+| ~echo 'this is a test' \vert awk '{print $1, (NF-2)}'~          | print first and NF number of columns print the second column from end                             |
+| **~awk~**                                                       |                                                                                                   |
+| ~awk '{print NR ") " $1 " -> " $(NF-2)}' logs.txt~              | ~NR~ Row Number. ~1) 07.46.199.184 -> 200~                                                        |
+| ~awk '{print $2}' logs.txt \vert awk 'BEGIN{FS=":"}{print $1}'~ | ~FS~ separator is :.  ~[28/Sep/2010~                                                              |
+| ~sed 's/\[//'~                                                  | Remove the first ~[~                                                                              |
+| ~awk '{if ($(NF-2) == "200") {print $0}}' logs.txt~             | Filter status column with status 200                                                              |
+| ~awk '{a+=$(NF-2); print "Total so far:", a}' logs.txt~         | Variable cross rows sum the total of status numeric column                                        |
+| ~awk '{a+=$(NF-2)}END{print "Total:", a}' logs.txt~             | Print only last cummulative value                                                                 |
+| ~pipes~                                         |                                                                                                   |
+| ~sbt test \vert& tee ~/tmp/test.log~                            | console + log                                                                                     |
+
 * Files
 ** File Descriptors
    1. File oriented file system everything is a file.
@@ -20,3 +36,4 @@
 ** Docker Swarm
 *** Local in mac
     http://callistaenterprise.se/blogg/teknik/2017/12/18/docker-in-swarm-mode-on-docker-in-docker/
+ 
