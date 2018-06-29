@@ -1,0 +1,371 @@
+#+TITLE NLP Text Summarization
+
+* Text Summarization
+
+* Disclosure
+
+I just began to study this topic i'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.
+
+* Our plan
+
+1. Introduction - meet text summarization.
+1. The jargon.
+1. Two published researches.
+1. History of text summarization.
+1. The different methods.
+1. Let's write some code.
+1. Where do I plan to head on.
+1. Summary.
+
+This document is in progress, it would be updated as soon as I learn new stuff.  Consider it a "learning in progress".
+
+* Jargon
+
+I always find that in any topic I study the jargon/taxonomy/terminology is one of the most important things to know, otherwise we will mess up.  So lets start with it.  Here is a brief explanation of the jargon related to our topic.  Actually more than it's important not knowing it will surely lead to some giant missunderstandings so lets get rid of this item already.  I start with the jargon even before the introduction!
+
+|------------------------+--------------------------------------------------------------------------------------------------------------------------|
+| Term                   | Description                                                                                                              |
+|------------------------+--------------------------------------------------------------------------------------------------------------------------|
+| Text Summarization     | Computer creating meaninful summaries of text                                                                            |
+| Google knowledge graph | A enhancement to search where it shows informative data on right panel for search results                                |
+|                        | ex. [[https://www.google.com/intl/es419/insidesearch/features/search/assets/img/snapshot.jpg]]                               |
+| Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing                         |
+|                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their features                                 |
+|                        | (such as products on Amazon.com)" http://vladimiralexiev.github.io/pres/20160329-OpenData-and-Ontologies/index-full.html |
+|                        | Ontology learning (ontology extraction, ontology generation, or ontology acquisition) is the automatic or semi-automatic |
+|                        | relationships between the concepts that these terms represent from a corpus of natural language text                     |
+|                        | creation of ontologies, including extracting the corresponding domain's terms.                                   |
+| nlg                    | Natural Language Generation                                                                                              |
+|                        |                                                                                                                          |
+
+
+
+* Introduction
+
+What is text summarization: An example could be great here so below is a real world one:
+
+Article:
+
+#+BEGIN_QUOTE
+novell inc. chief executive officer eric schmidt has been named chairman of the internet search-engine company google .
+#+END_QUOTE
+
+Human Summary:
+
+#+BEGIN_QUOTE
+novell ceo named google chairman
+#+END_QUOTE
+
+Machine Summary:
+
+#+BEGIN_QUOTE
+novell chief executive named to head internet company
+#+END_QUOTE
+
+Reference: [[https://github.com/tensorflow/models/tree/master/research/textsum][TensonFlow Research Text Summarization]]
+
+Yes, most text summarization train data, research and example models are focused on news, if you are not in news business most chances you need to get your own data and retrain, no ready models for you.
+
+How do we (humans, although  some bots are also reading this..) summarize text?
+
+1. We read it mostly or fully, we had better do that if we want a good summary.
+1. We understand it's meaning.
+1. We understand it's context.
+1. We read or already have read similar documents.
+1. We think about it.
+1. We put in intuitiveness.
+1. We put in knowledge gathered over the years.
+1. We apply templates.
+1. We know or assume we know what our audience expects.
+1. We highlight important phrases, words, sentences.
+1. We possibly sleep on it to get some more ideas.
+1. We do more things but I had to stop at some point.
+
+And then:
+
+**We come up with a much shorter version of the orig doc which contains the main ideas and shares the intent presented in the original doc - the glorious summary**
+
+or as "Text Summarization Techniques" paper says:
+
+#+BEGIN_QUOTE
+a text that is produced from one or more texts, that conveys important information in the original text(s), and that is no longer than half of the original text(s) and usually, significantly less than that
+#+END_QUOTE
+
+How do they (computers) summarize text?
+
+Who knows!
+
+Can they do that?
+If yes can they do that in a satisfactory manner?
+Will they have embarrasing mistakes?
+How far are they from humans? Or maybe how advanced?
+
+Well, i'm not sure there are answers to all the above questions, but, let's find out together, this is what we are here for.
+
+* First Paper - Text Summarization Techniques
+
+[[Text Summarization Techniques: A Brief Survey][Text Summarization Techniques: A Brief Survey]]
+
+This is the paper that we need to get started, their premise is: 
+
+#+BEGIN_QUOTE
+We review the different processes for summarization and describe the effectiveness and shortcomings of the different methods.
+#+END_QUOTE
+
+Sounds promising for a start, in addition quickly scanning the paper I see no math formula, for me this means I'll be able to finish this paper in less than a year :) Yay!
+
+* Updated plan
+
+* The importance of ontology
+
+If you take a look at leonardo right hand side summary in wikipedia or google summary you would see they managed to extract the relevant properties and fill it in.
+
+* Naive Code
+
+**Note, in our use case we are less interested in human complete sentences but more of a few words together which summarize the topic.**
+
+In our first naive code implementation here is our plan, no machine learning, just take some text and try to summarize it, somehow.  Let's see:
+
+Step 1: Here is our bunch of text to summarize:
+
+#+BEGIN_SRC python
+
+text: str = """
+Leonardo da Vinci
+Leonardo di ser Piero da Vinci (Italian: [leoˈnardo di ˌsɛr ˈpjɛːro da (v)ˈvintʃi] (About this sound listen); 15 April 1452 – 2 May 1519), more commonly Leonardo da Vinci or simply Leonardo, was an Italian polymath of the Renaissance, whose areas of interest included invention, painting, sculpting, architecture, science, music, mathematics, engineering, literature, anatomy, geology, astronomy, botany, writing, history, and cartography. He has been variously called the father of palaeontology, ichnology, and architecture, and is widely considered one of the greatest painters of all time. Sometimes credited with the inventions of the parachute, helicopter and tank,[1][2][3] he epitomised the Renaissance humanist ideal.
+
+Many historians and scholars regard Leonardo as the prime exemplar of the "Universal Genius" or "Renaissance Man", an individual of "unquenchable curiosity" and "feverishly inventive imagination",[4] and he is widely considered one of the most diversely talented individuals ever to have lived.[5] According to art historian Helen Gardner, the scope and depth of his interests were without precedent in recorded history, and "his mind and personality seem to us superhuman, while the man himself mysterious and remote".[4] Marco Rosci notes that while there is much speculation regarding his life and personality, his view of the world was logical rather than mysterious, and that the empirical methods he employed were unorthodox for his time.[6]
+
+Born out of wedlock to a notary, Piero da Vinci, and a peasant woman, Caterina, in Vinci in the region of Florence, Leonardo was educated in the studio of the renowned Florentine painter Andrea del Verrocchio. Much of his earlier working life was spent in the service of Ludovico il Moro in Milan. He later worked in Rome, Bologna and Venice, and he spent his last years in France at the home awarded to him by Francis I of France.
+
+Leonardo was, and is, renowned primarily as a painter. Among his works, the Mona Lisa is the most famous and most parodied portrait[7] and The Last Supper the most reproduced religious painting of all time.[4] Leonardo's drawing of the Vitruvian Man is also regarded as a cultural icon,[8] being reproduced on items as varied as the euro coin, textbooks, and T-shirts.
+
+A painting by Leonardo, Salvator Mundi, sold for a world record $450.3 million at a Christie's auction in New York, 15 November 2017, the highest price ever paid for a work of art.[9] Perhaps fifteen of his paintings have survived.[nb 1] Nevertheless, these few works, together with his notebooks, which contain drawings, scientific diagrams, and his thoughts on the nature of painting, compose a contribution to later generations of artists rivalled only by that of his contemporary, Michelangelo.
+
+Leonardo is revered for his technological ingenuity. He conceptualised flying machines, a type of armoured fighting vehicle, concentrated solar power, an adding machine,[10] and the double hull. Relatively few of his designs were constructed or even feasible during his lifetime, as the modern scientific approaches to metallurgy and engineering were only in their infancy during the Renaissance. Some of his smaller inventions, however, such as an automated bobbin winder and a machine for testing the tensile strength of wire, entered the world of manufacturing unheralded. A number of Leonardo's most practical inventions are nowadays displayed as working models at the Museum of Vinci. He made substantial discoveries in anatomy, civil engineering, geology, optics, and hydrodynamics, but he did not publish his findings and they had no direct influence on later science.[11]"""
+
+#+END_SRC
+
+Leonardo was a good man, let's naively summarize him.
+
+First, how would you summarize this text, let's say limiting to 7 words?
+
+I would say this: 
+
+Human summary: "Leoardo Da Vinci, italian, renaisssane, painter, sculpturer"
+
+Now lets move on with our naive code implementation:
+
+Step 2: Tokenize the words:
+
+#+BEGIN_SRC python
+
+words = word_tokenize(text) # thanks nltk
+
+#+END_SRC
+
+Step 3: Score words based on their frequency
+
+#+BEGIN_SRC python
+
+words_score: FreqDist = FreqDist() # thanks nltk
+for word in words:
+    words_score[word.lower()] += 1
+
+#+END_SRC
+
+Step 4: The summary would be our top 7 frequent words:
+
+#+BEGIN_SRC python
+
+def top_scores_sorted_by_text(w_scores: FreqDist, k: int):
+    return sorted(w_scores.most_common(k), key=lambda w: word_index(text, w))
+
+summary = top_scores_sorted_by_text(words_score, 7)
+print(summary)
+
+#+END_SRC
+
+Let's see our result
+
+#+BEGIN_SRC python
+
+[('[', 15), ('his', 17), (',', 67), ('of', 31), ('the', 32), ('and', 26), ('.', 21)] # that's a horrible summary!
+
+#+END_SRC
+
+We have ~his~ ~of~ ~the~ obviously we don't want them in our summary let's get rid of them:
+
+Step 5: Get rid of stop words
+
+#+BEGIN_SRC python
+
+stop_words: Set[str] = set(stopwords.words("english")) # thanks nltk
+words = [w for w in words if not w in stop_words] # thanks python
+text = ' '.join(words) # and the updated text (sorry immutability) is now a join of the words without stop words.
+
+#+END_SRC
+
+Now let's print again the resulting summary
+
+#+BEGIN_SRC python
+
+[('leonardo', 11), ('da', 5), ('vinci', 6), ('[', 15), (']', 15), (',', 67), ('.', 21)]
+
+#+END_SRC
+
+This is somewhat a little better version we have ~leonardo da vinci~ as the first 3 words in summary sounds perfect! but we have also lot of puncutaions, let's get rid of them:
+
+Step 6: Get rid of punctuations
+
+#+BEGIN_SRC python
+
+def remove_punctuations(s: str) -> str:
+    table = str.maketrans({key: None for key in string.punctuation}) # standard python (thanks).
+    return s.translate(table)
+
+text = remove_punctuations(text)
+
+#+END_SRC
+
+And print again the summary:
+
+#+BEGIN_SRC python
+
+[('leonardo', 9), ('da', 5), ('vinci', 6), ('he', 4), ('renaissance', 4), ('painting', 4), ('engineering', 3)]
+
+#+END_SRC
+
+Uh, looks much better.  There is one issue, we have ~he~ in the summary, we don't want it, we have only 7 words and no space to waste, could it be that leonaro was proficient in another topic?
+
+Step 7: Fix stop word bug
+
+We have a bug, we have removed the stopwords with: ~[w for w in words if not w in stop_words]~ but somehow the ~he~ stopword has sneaked inside. Let's fix it, the problem is that we didn't lower case the text so ~He~ was not considered as the stopword ~he~
+
+#+BEGIN_SRC python
+
+text = text.lower() # no immutability small example.
+
+#+END_SRC
+
+And now let's run the summary again:
+
+#+BEGIN_SRC python
+
+[('leonardo', 9), ('da', 5), ('vinci', 6), ('renaissance', 4), ('painting', 4), ('engineering', 3), ('inventions', 3)]
+
+#+END_SRC
+
+No more ~he~ stopword.  This even looks like a much better summary that my original (human) one!
+
+**But don't get excited, there are millions if not billions of summaries this naive dumb summarized would not pass, just think of products for sale.  If we think of products for sale we need a better flow.**
+
+We could think of more enhancements:
+
+1. Give higher score to words appearing in title.
+1. Refer to query (if got to this page by search).
+1. More..
+
+Let's summary what we have done in the above naive summarizer:
+
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│Text Summarization Very Naive Implementation                                                         │
+│                                                                                                     │
+│┌───────────────────┐      ┌───────────────────┐      ┌───────────────────┐     ┌───────────────────┐│
+││                   │      │                   │      │                   │     │                   ││
+││Get Some text from │      │      Cleanup      │      │   Words Scoring   │     │Select top k words ││
+││     wikipedia     │─────▶│                   │─────▶│                   │────▶│  as our summaruy  ││
+││                   │      │                   │      │                   │     │                   ││
+│└───────────────────┘      └───────────────────┘      └───────────────────┘     └───────────────────┘│
+│                                     │                          │                                    │
+│                                     ▼                          ▼                                    │
+│                           ┌───────────────────┐      ┌───────────────────┐                          │
+│                           │Remove punctuations│      │  Frequency Table  │                          │
+│                           └───────────────────┘      └───────────────────┘                          │
+│                                     │                                                               │
+│                                     ▼                                                               │
+│                           ┌───────────────────┐                                                     │
+│                           │    Lower case     │                                                     │
+│                           └───────────────────┘                                                     │
+│                                     │                                                               │
+│                                     ▼                                                               │
+│                           ┌───────────────────┐                                                     │
+│                           │ Remove stopwords  │                                                     │
+│                           └───────────────────┘                                                     │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+A few points to note:
+
+1. This is extractive text summarizer we didn't invent anything, no semantic understanding, we just selected words.
+1. There is a better algorithm called 
+
+** Extraction
+
+ You take existing phrases from text, this is both good and bad.  Good because you don't have to do any nlg and bad because who promises a good summary is extracted from the sentences already in the document..
+
+* Resources
+
+
+
+|-----------------------------------------------------------------+--------------------------------------------------------------------------------|
+| resource                                                        | link                                                                           |
+|-----------------------------------------------------------------+--------------------------------------------------------------------------------|
+| Models Zoo - Ready Made Models                                  | https://modelzoo.co/                                                           |
+| A Neural Attention Model for Abstractive Sentence Summarization | https://arxiv.org/abs/1509.00685                                               |
+| TensorFlow-Summarization                                        | https://github.com/thunlp/TensorFlow-Summarization                             |
+| Webscrapper                                                     | http://webscraper.io/                                                          |
+| Dzone on text summarization                                     | https://dzone.com/articles/a-guide-to-natural-language-processing-part-3       |
+| DataSet                                                         | https://duc.nist.gov/duc2004/                                                  |
+| How do I download DUC dataset for text summarization?           | https://www.quora.com/How-do-I-download-DUC-dataset-for-text-summarization     |
+| **EXAMPLE**: Keras text summarization on news                   | https://github.com/chen0040/keras-text-summarization                           |
+| Example: NLTK Simple Summarization                              | https://dev.to/davidisrawi/build-a-quick-summarizer-with-python-and-nltk       |
+| Example: Text Summarize ROUGE scoring                           | http://forum.opennmt.net/t/text-summarization-on-gigaword-and-rouge-scoring/85 |
+| Software Engineering Daily                                      |                                                                                |
+|                                                                 |                                                                                |
+
+* Ideas
+extraction can also be good for us we just extract text
+
+* Internal Resources
+
+| Resource                                    | Link                                                                   |
+| Machine Learning Mastery Text Summarization | https://machinelearningmastery.com/?s=text+summarization&submit=Search |
+|                                             |                                                                        |
+* Ready made models
+** https://github.com/tensorflow/models/tree/master/research/textsum
+
+#+BEGIN_SRC bash
+
+# With a preexisting conda installation.
+
+conda install -c conda-forge tensorflow
+conda install -c conda-forge bazel
+cd tmp
+git clone https://github.com/tensorflow/models
+mkdir test-summarization
+cd test-summarization
+touch WORKSPACE
+mkdir data
+cp -r ~/tmp/models/research/textsum/data/data ./data/
+cp -r ~/tmp/models/research/textsum/data/vocab ./data/
+bazel build -c opt textsum/...
+
+INFO: Analysed 7 targets (0 packages loaded).
+INFO: Found 7 targets...
+INFO: Elapsed time: 0.436s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+
+bazel-bin/textsum/seq2seq_attention \
+    --mode=train \
+    --article_key=article \
+    --abstract_key=abstract \
+    --data_path=data/training-* \
+    --vocab_path=data/vocab \
+    --log_root=textsum/log_root \
+    --train_dir=textsum/log_root/train
+
+
+
+#+END_SRC
+
