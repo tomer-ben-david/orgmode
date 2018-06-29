@@ -1,5 +1,67 @@
 *+TITLE: Int
 
+* Study Plan
+|-------------------------------------+-------------------------------------+----------------------------------------------------------|
+| Category                            | Item                                | Desc                                                     |
+|-------------------------------------+-------------------------------------+----------------------------------------------------------|
+| Java                                |                                     |                                                          |
+|                                     |                                     |                                                          |
+|                                     | Memory Management                   | JVM internals.pdf                                        |
+|                                     | Lambda                              | Java 8 in action                                         |
+|                                     | Streams                             | Java 8 in action                                         |
+| **Linux**                           |                                     |                                                          |
+|                                     |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # SQL                               |                                     |                                                          |
+|                                     |                                     |                                                          |
+| innerjoin, outer                    |                                     | SQL queries for mere mortals                             |
+| pass riddle sql questions           |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # Search                            |                                     |                                                          |
+|                                     |                                     |                                                          |
+| Relevant search book                |                                     | Practice!                                                |
+|                                     |                                     |                                                          |
+| # Troubleshooting                   |                                     |                                                          |
+|                                     |                                     |                                                          |
+|                                     | python load log file                |                                                          |
+|                                     | python parse log file               | https://www.nltk.org/book/ch03.html                      |
+|                                     | bucket time and plot number of GET  | **CURRENT**                                              |
+|                                     | python chart line/hist log file     | Log file line chart or hystogram based on time timestamp |
+|                                     | 2 variable line chart based on file |                                                          |
+|                                     |                                     |                                                          |
+| # Alexa                             |                                     |                                                          |
+|                                     |                                     |                                                          |
+| Create a skill                      |                                     |                                                          |
+| General continue                    |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # AWS                               |                                     |                                                          |
+|                                     |                                     |                                                          |
+| Start vm, create user, connect ssh  |                                     |                                                          |
+| Install hadoop on custom vm         |                                     |                                                          |
+| Run hadoop job on cusotm vm         |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # BigData                           |                                     |                                                          |
+|                                     |                                     |                                                          |
+| Create spark job                    |                                     |                                                          |
+| Short snippets of spark             |                                     |                                                          |
+| Install local kafka                 |                                     |                                                          |
+| Send and receive topic events       |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # Machine Learning                  |                                     |                                                          |
+|                                     |                                     |                                                          |
+| Build model to predict house prices |                                     |                                                          |
+| NLP Basic steps with python code    |                                     |                                                          |
+| Deep learning basic model python    |                                     |                                                          |
+|                                     |                                     |                                                          |
+| # Distributed Systems               |                                     |                                                          |
+|                                     |                                     | `                                                        |
+| Design a simple distributed system  |                                     | With all the pitfalls concurrency etc.                   |
+|                                     |                                     |                                                          |
+| # Data Structures and Algorithms    |                                     |                                                          |
+|                                     |                                     |                                                          |
+| General                             |                                     |                                                          |
+
+
 * CS Patterns
 
 |------------------------------------------------------------------------+------------------------|
@@ -29,46 +91,46 @@
 7. **impossible** what is the BEST HEAVEN data structure you would want to solve it? Now prepare that DS one time even with high calculation cost and use it to solve the problem.  [http://www.ardendertat.com/2011/10/17/programming-interview-questions-8-transform-word/](http://www.ardendertat.com/2011/10/17/programming-interview-questions-8-transform-word/)
 8. **Mental jump** convert input data structure to the best one you want! cost is one time then all lookups and you always have that output data structure, think you have hadoop.
 
-* Signs you need recursion
+** Signs you need recursion
 
-1. **Permutations** The problem requires many permutations like 2^n
-2. **impossible** It looks impossible to solve the problem.  Let recursion help you. 
+ 1. **Permutations** The problem requires many permutations like 2^n
+ 2. **impossible** It looks impossible to solve the problem.  Let recursion help you. 
 
-3. **Impossible** cannot get answer? When questions looks impossible most probably recursion.  In this case you must get some help from recursion friend to reduce the problem.  Impossible question is a big hint we need a recursion, we can't boggle our mind around it.
+ 3. **Impossible** cannot get answer? When questions looks impossible most probably recursion.  In this case you must get some help from recursion friend to reduce the problem.  Impossible question is a big hint we need a recursion, we can't boggle our mind around it.
 
-* Signs you need to massage input
+** Signs you need to massage input
 
-Impossible to solve, too many options, you need to turn the input data structure into the dream data structure that would help you resolve the question.  As you do it one time, precalc, and then for each test function you just run on the new data structure.
+ Impossible to solve, too many options, you need to turn the input data structure into the dream data structure that would help you resolve the question.  As you do it one time, precalc, and then for each test function you just run on the new data structure.
 
-* Coding Patterns
+** Coding Patterns
 
-1. Use **`PriorityQueue`** instead of Max/Min heap!!!! This will save you a huge load of time as you need a heap in rather many of the questions.
-2. Use `Arrays.binarySearch` - to find!!
-3. Use `Arrays.toList(new int {1, 2, 3})` to turn an array to list.
-4. `assert(condition for tests)` with `-ea` flag to turn it on.
-5. Throw `IllegalArgumentException` for quick validation.
-6. Use `while (cur.next() != null)` in linkedList to avoid holding two pointers `prev` and `cur`.
-7. `BFS` always finds the shortest path.
-8. `DFS` uses less space.
-9. Use `ArrayQueue` instead of `ArrayList` for efficient `FIFO` in arrayList remove would be `O(n)`
-10. Use `Collections.reverse` to reverse a `list` 
-11. `DFS` and `BFS` both take `O(m+n)`
-12. `BFS` store `nodesAlreadyVisited` don't revisit them wasting time in shortest path finding.
+ 1. Use **`PriorityQueue`** instead of Max/Min heap!!!! This will save you a huge load of time as you need a heap in rather many of the questions.
+ 2. Use `Arrays.binarySearch` - to find!!
+ 3. Use `Arrays.toList(new int {1, 2, 3})` to turn an array to list.
+ 4. `assert(condition for tests)` with `-ea` flag to turn it on.
+ 5. Throw `IllegalArgumentException` for quick validation.
+ 6. Use `while (cur.next() != null)` in linkedList to avoid holding two pointers `prev` and `cur`.
+ 7. `BFS` always finds the shortest path.
+ 8. `DFS` uses less space.
+ 9. Use `ArrayQueue` instead of `ArrayList` for efficient `FIFO` in arrayList remove would be `O(n)`
+ 10. Use `Collections.reverse` to reverse a `list` 
+ 11. `DFS` and `BFS` both take `O(m+n)`
+ 12. `BFS` store `nodesAlreadyVisited` don't revisit them wasting time in shortest path finding.
 
-* CS Literacy
+** CS Literacy
 
-1. **Random Forests** => machine learning, take "average" of multiple decision trees as your result, avoic noise.
-2. **DFS** => Init: Stack, Push head ==> Loop while stack not empty ==> Pop one, Mark it, push all adjucent vertexes to stack.  O(V + E) [https://www.youtube.com/watch?v=1MBr9swUPE8](https://www.youtube.com/watch?v=1MBr9swUPE8)
-3. **merkel trees** tree of hashes you send it in between the nodes, so that nodes can very quickly know if they have the wrong data, so they sync.
-4. **vector clocks** logical clocks, think git and distributed resolution, although we are distributed each commit get's a hash and we can fix collisions.  
+ 1. **Random Forests** => machine learning, take "average" of multiple decision trees as your result, avoic noise.
+ 2. **DFS** => Init: Stack, Push head ==> Loop while stack not empty ==> Pop one, Mark it, push all adjucent vertexes to stack.  O(V + E) [https://www.youtube.com/watch?v=1MBr9swUPE8](https://www.youtube.com/watch?v=1MBr9swUPE8)
+ 3. **merkel trees** tree of hashes you send it in between the nodes, so that nodes can very quickly know if they have the wrong data, so they sync.
+ 4. **vector clocks** logical clocks, think git and distributed resolution, although we are distributed each commit get's a hash and we can fix collisions.  
 
-* CS Interview Resources
+** CS Interview Resources
 
-| Topic                                    | Category | Resource                                 |
-| ---------------------------------------- | -------- | ---------------------------------------- |
-| CS Programming Interview querstions and good answers |          | http://www.ardendertat.com/2011/10/18/programming-interview-questions-9-convert-array/ |
-|                                          |          |                                          |
-|                                          |          |                                          |
+ | Topic                                    | Category | Resource                                 |
+ | ---------------------------------------- | -------- | ---------------------------------------- |
+ | CS Programming Interview querstions and good answers |          | http://www.ardendertat.com/2011/10/18/programming-interview-questions-9-convert-array/ |
+ |                                          |          |                                          |
+ |                                          |          |                                          |
 
 
 
