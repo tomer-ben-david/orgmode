@@ -1,4 +1,5 @@
 #+TITLE NLP Text Summarization
+#+ATTR_LaTeX: :mode inline-math :environment array :align left
 
 * Text Summarization
 
@@ -104,7 +105,7 @@ Well, i'm not sure there are answers to all the above questions, but, let's find
 
 * First Paper - Text Summarization Techniques
 
-[[Text Summarization Techniques: A Brief Survey][Text Summarization Techniques: A Brief Survey]]
+[[https://arxiv.org/abs/1707.02268][Text Summarization Techniques: A Brief Survey]]
 
 This is the paper that we need to get started, their premise is: 
 
@@ -268,6 +269,8 @@ We could think of more enhancements:
 
 Let's summary what we have done in the above naive summarizer:
 
+#+BEGIN_SRC 
+
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │Text Summarization Very Naive Implementation                                                         │
 │                                                                                                     │
@@ -294,10 +297,46 @@ Let's summary what we have done in the above naive summarizer:
 │                           └───────────────────┘                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
+#+END_SRC
+
 A few points to note:
 
 1. This is extractive text summarizer we didn't invent anything, no semantic understanding, we just selected words.
-1. There is a better algorithm called 
+1. There is a better algorithm called ~SumBasic~
+
+* SumBasic 
+
+
+Here is the formula for sum basic:
+
+\begin{equation}
+g(S_j)=\frac{\sum_{w_i\in{S_j}}P(w_i)}{|\{w_i|w_i\in{S_j}|}
+\end{equation}
+
+This looks complex to me.  But I found that after I got what each symbol means it became simple, even embarrasingly simple.
+
+Here is the meaning of that formula:
+
+|----------------------------------+-----------------------------------------------------------------|
+| term                             | meaning                                                         |
+|----------------------------------+-----------------------------------------------------------------|
+| g(S_j)                           | Weight of sentence ~j~                                          |
+| w_i\in{S_j}                      | For each word that belongs to sentence j                        |
+| \sum_{w_i\in{S_j}}P(w_i)         | The sum of all probabilities of words that belong to sentence j |
+| {\vert\{w_i\vertw_i\in{S_j}\vert | Number of words in the sentence j                               |
+|----------------------------------+-----------------------------------------------------------------|
+
+So that turns g(S_j) to be the average probability of words in sentence j where word probabilty is simply the number of occurences of word w_i inside the document.
+
+This is very similar to what we did with words without knowing ~SumBasic~! In our case we wanted to get a bunch of words and not a bunch of sentences so we just took the words appearing most, which is similar to taking the sentences with highest word probablity.
+
+SumBasic then continues to update each word probability as it's multiplication by itself (reduce it) so we can now pick other sentences, and it keeps on with this loop until we picked as much sentences as we meant to.
+
+* Updated Plan
+
+Now that we did a variation on SumBasic for words instead of sentences, lets move on with more examples appearing on the web.  Namely algorithms that do more of understanding of the text and compose new text and not just choose and extract ready made summary from our existing text.
+
+
 
 ** Extraction
 
@@ -321,6 +360,7 @@ A few points to note:
 | Example: NLTK Simple Summarization                              | https://dev.to/davidisrawi/build-a-quick-summarizer-with-python-and-nltk       |
 | Example: Text Summarize ROUGE scoring                           | http://forum.opennmt.net/t/text-summarization-on-gigaword-and-rouge-scoring/85 |
 | Software Engineering Daily                                      |                                                                                |
+| SumBasic Clustering                                             | http://www.cs.middlebury.edu/~mpettit/project.html                             |
 |                                                                 |                                                                                |
 
 * Ideas
