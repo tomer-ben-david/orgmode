@@ -356,6 +356,8 @@ So given an article identify:
 1. Fill in the values from the article about the features of that topic.
 
 
+<---- **This is were I am now i'm trying to do the steps 1,2,3 and come up with a good summary, i will first identify the category of the text, then based on category I will identify the features, then based on text I will extract the values to fill into the template (like the right hand side google/wikipedia summary card) then this would become the summary!** so this would involve some more heavy coding and thinkin... ----->
+
 ** Extraction
 
  You take existing phrases from text, this is both good and bad.  Good because you don't have to do any nlg and bad because who promises a good summary is extracted from the sentences already in the document..
