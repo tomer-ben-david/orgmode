@@ -3,6 +3,8 @@
 
 * Text Summarization
 
+Summarization is the task of producing a shorter version of a document that preserves most of the original document's meaning.
+
 * Disclosure
 
 I just began to study this topic i'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.  Document is in progress and would get updated.
