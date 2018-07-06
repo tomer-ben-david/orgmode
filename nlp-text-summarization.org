@@ -336,12 +336,13 @@ SumBasic then continues to update each word probability as it's multiplication b
 
 Now that we did a variation on SumBasic for words instead of sentences, lets move on with more examples appearing on the web.  Namely algorithms that do more of understanding of the text and compose new text and not just choose and extract ready made summary from our existing text.
 
-**Step 1: Classify text**
+**Step 1: Mode: Classify text**
 
 Is the text about an artist? is the text about a car is the text about an electric cleaning machine?
 
-**Step 2: Idetify the main features of the topic**
+**Step 2: Manual: Idetify the main features of the topic**
 
+That is the ontology of the topic.
 We have identified that the text is about an electric cleaning machine this means, we need these features (this is the task to identify the features)
 
 1. Watts
