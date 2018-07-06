@@ -367,7 +367,95 @@ So given an article identify:
 
 * Step 1: Identify Article Topic
 
-This is also called **Text Classification** .  
+This is also called **Text Classification**.  There 3 main categories to achieve Text Classification:
+
+1. Rules
+1. Standard Machine Learning Models
+1. Deep Learning  
+
+I don't have time for rules, my laptop is too slow for deep learning and i'm not sure I have enought data, so i'll go with option 2 standard models.
+
+There is a great example (i'm doing this for the first time) at sklearn website for how to build a model to classify text. [[http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html]] I'm simply going to use and run it.
+
+Creating the model and prediciting the class/topic for the article will involve the following steps:
+
+1. Load labeled newgroups data with topics.
+1. Vectorize the documents, BOW (Bag Of Words).
+1. We can do better than BOW so we are going to TFIDF the docs to get the target vectors.
+1. Run train
+1. Predict
+
+We are not going to check the accuracy, just run arbitrary example on the model.
+
+Note that sklearn will handle the large sparse matrix issue (consming much of RAM) for us, it's going to shrink them automatically.  (did i say thanks sklearn?)
+
+**Step 1: Load Labeled newsgroups data with topics**
+
+#+BEGIN_SRC python
+
+from sklearn.feature_extraction.text import CountVectorizer
+import json
+
+categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
+from sklearn.datasets import fetch_20newsgroups
+twenty_train = fetch_20newsgroups(subset='train',categories=categories, shuffle=True, random_state=42)
+twenty_train.target_names = ['alt.atheism', 'comp.graphics', 'sci.med', 'soc.religion.christian']
+
+#+END_SRC
+
+In the above code we:
+
+1. define our categories, we have defined 4 newsgroups categories.  Note that sklearn knows to fetch this example data automatially for us.
+1. Load the text data into a variable ~twenty_train~
+1. Add a new member to ~twenty_train~ named ~target_names~ with our categories.
+
+**Step 2: Feature engineering**
+
+We have loaded our data which is just a set of newsgroups posts.  What are it's features? It's a text data, so it has words right? so each distinct word is going to serve as a feature.  In our case BOW means a matrix where each doc is a row and each column is a word and we count the number of times such word appears in each doc.  Guess what, sklearn will do that automatically for us and also shrink the sparse matrix (most of words do not appear in each doc).
+
+BOW code:
+
+#+BEGIN_SRC python
+
+count_vect = CountVectorizer() 
+X_train_counts = count_vect.fit_transform(twenty_train.data) # Tokenize, Filter Stopwords, BOW Features, Transform to vetor, this returns Term Document Matrix! thanks sklearn
+
+#+END_SRC
+
+That's it with 2 lines we have tokenized the newgroup messages, filtered stopwords, extracted BOW features, transformed them to a vector (numbers).
+
+BOW is skewed toward large documents where words appear more so we are going to turn our face to the TFIDF vectorizing instead of BOW, here is the code to do that:
+
+**Step 3: Replace BOW with TFIDF**
+
+#+BEGIN_SRC python
+
+from sklearn.feature_extraction.text import TfidfTransformer
+tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts) # Transform a count matrix to a normalized tf or tf-idf representation
+X_train_tf = tf_transformer.transform(X_train_counts) # Transform a count matrix to a tf or tf-idf representation # X_train_tf.shape
+tfidf_transformer = TfidfTransformer()
+X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+
+#+END_SRC
+
+The above code is self explanatory we first do TF and then IDF, note that we do all operatoins with just a few lines, sklearn appears to be very developer friendly and has concise and clear api, no wonder it's so common.
+
+Now that we have our data loaded, and extracted all the features from it (vectorized with tfidf) it's time to build the model.
+
+**Step 4: Build the model to predict class of newsgroup message**
+
+#+BEGIN_SRC python
+
+from sklearn.naive_bayes import MultinomialNB # Naive bayes classifier
+clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
+
+#+END_SRC 
+
+There are multiple classifiers we are following sklearn example, in our example, so we have chosen the same.  We then called ~fit~ and passed as input: ~X_train_tfidf~ that is the set of features for each doc (the tfidf vectors) and as the labels/output we train the model with ~twenty_train.target~ which is the vector of topics we train the model with for each row.
+
+Now for money time, we are going to predict something, i'm going to take an arbitrary wikipedia article that deals with one of the 4 categories and see if it's well predicted, so what have we got there, science medicine, religion, computer graphics, and atheism.
+
+Let's pick up some medical article from wikipedia and see if its identified as a medical topic.
 
 
 
