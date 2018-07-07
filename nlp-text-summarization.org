@@ -455,9 +455,46 @@ There are multiple classifiers we are following sklearn example, in our example,
 
 Now for money time, we are going to predict something, i'm going to take an arbitrary wikipedia article that deals with one of the 4 categories and see if it's well predicted, so what have we got there, science medicine, religion, computer graphics, and atheism.
 
-Let's pick up some medical article from wikipedia and see if its identified as a medical topic.
+To test the prediction we are not going to run on a set of artiles but just pick two example articles from wikipedia and see the outcome prediction.  At first let's pick an easy one I think, an artile from wikipedia about pneumonia, I will pick the first two sections and run it through the model prediction and see the category chosen.
 
+#+BEGIN_SRC python
 
+## Predict document class!
+
+# https://en.wikipedia.org/wiki/Pneumonia
+
+docs_new = ["""pneumonia is an inflammatory condition of the lung affecting primarily the small air sacs known as alveoli.[4][13] Typically symptoms include some combination of productive or dry cough, chest pain, fever, and trouble breathing.[2] Severity is variable.  Pneumonia is usually caused by infection with viruses or bacteria and less commonly by other microorganisms, certain medications and conditions such as autoimmune diseases.[4][5] Risk factors include other lung diseases such as cystic fibrosis, COPD, and asthma, diabetes, heart failure, a history of smoking, a poor ability to cough such as following a stroke, or a weak immune system.[6] Diagnosis is often based on the symptoms and physical examination.[7] Chest X-ray, blood tests, and culture of the sputum may help confirm the diagnosis.[7] The disease may be classified by where it was acquired with community, hospital, or health care associated pneumonia"""]
+X_new_counts = count_vect.transform(docs_new) # Extract new doc features.
+X_new_tfidf = tfidf_transformer.transform(X_new_counts)
+
+predicted = clf.predict(X_new_tfidf)
+
+for doc, category in zip(docs_new, predicted):
+    print('%r => %s' % (doc, twenty_train.target_names[category]))
+
+#+END_SRC
+
+Now after running this ~pneumonia~ text we get from the model this prediction: 
+
+~it was acquired with community, hospital, or health care associated pneumonia' => sci.med~ (science medical) so it got categorized as ~sci.med~ which is simply corret!
+
+Now let's say a nother piece of text this time about ~abortion~ and see what the model will predict, here is the new text we have fed it with: https://en.wikipedia.org/wiki/Abortion the first section again which is:
+
+> Abortion is the ending of pregnancy by removing an embryo or fetus before it can survive outside the uterus.[note 1] An abortion that occurs spontaneously is also known as a miscarriage. An abortion may be caused purposely and is then called an induced abortion, or less frequently, "induced miscarriage". The word abortion is often used to mean only induced abortions. A similar procedure after the fetus could potentially survive outside the womb is known as a "late termination of pregnancy"
+
+And the resulting prediction by the model is:
+
+~...survive outside the womb is known as a "late termination of pregnancy' => soc.religion.christian~
+
+Which means that abortion was categorized as ~social religion christianity~ category => I don't know if to be happy, sad, depressed, or excited by this prediction.
+
+**Summary of step 1**
+
+It looks like there is a way to determine the class of an text snippet by it's content using machine learning models, for sure there are challenges but this appears to be rather well known problem and there are available methods for solving and optimizing it (changing model, parameters, better training input data).
+
+Now for the next step we have expected that for each class/topic we are going to select the set of features which we are going to use for text summarization.  I'm afraid this part has to be manual, we have to say that for a topic "disease", the features are going to be a set of closed features suh as "mortality rate", "suspectible age group", "name", "average length".  And on the other hand for "cars" topic the summary template variables are going to be: "manufacturer", "engine type", "year", "color", "used/new", etc.  It appears like for these set of summary template variables are going to be hand crafted.
+
+The question is for step 3, whether a model could extract the set of "variable values" from articles and apply a summary from them? I don't have the answer, at least not at my current googling phase.
 
 * Resources
 
@@ -479,6 +516,7 @@ Let's pick up some medical article from wikipedia and see if its identified as a
 | Software Engineering Daily                                      |                                                                                |
 | SumBasic Clustering                                             | http://www.cs.middlebury.edu/~mpettit/project.html                             |
 | Keras Text Classification                                       | https://medium.com/skyshidigital/getting-started-with-keras-624dbf106c87       |
+| NLP for hackers TextRank for TextSummarization                  | https://nlpforhackers.io/textrank-text-summarization/                          |
 |                                                                 |                                                                                |
 
 * Ideas
