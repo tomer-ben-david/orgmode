@@ -3,37 +3,61 @@
 #+STARTUP: inlineimages
 
 * CheatSheet
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| command                                                                           | description                                                                           |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~conda create --name testenv~                                                     |                                                                                       |
-| ~conda activate testenv~                                                          |                                                                                       |
-| ~conda env list~                                                                  |                                                                                       |
-| ~conda installs spyder~                                                           |                                                                                       |
-| ~conda activate testenv~                                                          |                                                                                       |
-| ~conda install -c conda-forge pyspark~                                            | install pyspark                                                                       |
-| ~/Users/tomer.bendavid/anaconda3/envs/testenv1/bin/python3.6~                     | python interpreter for intellij spyder when using anaconda                            |
-| ~/Users/tomer.bendavid/anaconda3/bin/python~                                      | Soft link i think points to current python                                            |
-| ~requests.get('http://someurl.csv`)~                                              | import requests very convinient for data download                                     |
-| ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~           | read log file to string                                                               |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| **pandas**                                                                        | parse-log.py                                                                          |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~df['some_column_name']~                                                          | Refer to column in data frame                                                         |
-| ~pd.DataFrame({"c1": ["A", "B", "C"], "c2": ["A", "B", "C"]})~                    | Create 2 column dataframe                                                             |
-|                                                                                   | https://stackoverflow.com/questions/14745022/how-to-split-a-column-into-two-columns   |
-| ~df['A'], df['B'] = df['AB'].str.split('-', 1).str~                               | split AB column to two columns split by ~-~                                           |
-| ~df['AB'].str.split('-', 1, expand=True)~                                         | same split AB into two columns                                                        |
-| ~df.join(df['AB'].str.split('-', 1, expand=True).rename(columns={0:'A', 1:'B'}))~ | split column to two https://tinyurl.com/pandas-split-column                           |
-| ~time_trimmed = time.map(lambda s: re.split('[-+]', s.strip('[]'))[0])~           | Manipulate column first split by - or + then remove [] then take first part of result |
-| ~data.reset_index().set_index('time').resample('2min').mean().head()~             | 2 minutes bean and do average to columns                                              |
-| ~pandas.set_option('max_columns',10)~                                             | spyder and pandas columns width more columns                                          |
-| ~df.corr()~                                                                       | Correlation between all columns                                                       |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| **plotting**                                                                      |                                                                                       |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~df.hist()~                                                                       | show panda histogram on all columns                                                   |
-|-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| command                                                                                | description                                                                           |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| ~conda create --name testenv~                                                          |                                                                                       |
+| ~conda activate testenv~                                                               |                                                                                       |
+| ~conda env list~                                                                       |                                                                                       |
+| ~conda installs spyder~                                                                |                                                                                       |
+| ~conda activate testenv~                                                               |                                                                                       |
+| ~conda install -c conda-forge pyspark~                                                 | install pyspark                                                                       |
+| ~/Users/tomer.bendavid/anaconda3/envs/testenv1/bin/python3.6~                          | python interpreter for intellij spyder when using anaconda                            |
+| ~/Users/tomer.bendavid/anaconda3/bin/python~                                           | Soft link i think points to current python                                            |
+| ~requests.get('http://someurl.csv`)~                                                   | import requests very convinient for data download                                     |
+| ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~                | read log file to string                                                               |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| Load csv and files                                                                     |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| ~import csv; numpy.array(list(csv.reader(open(filename), 'rt'), delimeter=',')).shape~ | Read csv with standard python                                                         |
+| ~numpy.loadtxt(open(filename,'r'), delimeter(',')).shape~                              | Load csv with NumPy                                                                   |
+| ~numpy.loadtxt(urlopen('http://...'), delimeter=',').shape~                            | Load csv from URL                                                                     |
+| ~pandas.read_csv(filename, names=['col1','col2']).shape~                               | Load csv with Pandas                                                                  |
+| ~pandas.read_csv(url, names=['col1', 'col2']).shape~                                   | Load csv from URL with Pandas                                                         |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| **pandas**                                                                             | parse-log.py                                                                          |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| ~pandas.Series(numpy.array([1,2,3]), index=['row1', 'row2', 'row3'])~                  | Panda ~Series~ One dimentional array.                                                 |
+| ~pandas.DataFrame(numpy.array([1,2], [3,4]), index=['row1','row2'])~                   | DF Multidimentional array                                                             |
+| ~df['some_column_name']~                                                               | Refer to column in data frame                                                         |
+| ~pd.DataFrame({"c1": ["A", "B", "C"], "c2": ["A", "B", "C"]})~                         | Create 2 column dataframe                                                             |
+|                                                                                        | https://stackoverflow.com/questions/14745022/how-to-split-a-column-into-two-columns   |
+| ~df['A'], df['B'] = df['AB'].str.split('-', 1).str~                                    | split AB column to two columns split by ~-~                                           |
+| ~df['AB'].str.split('-', 1, expand=True)~                                              | same split AB into two columns                                                        |
+| ~df.join(df['AB'].str.split('-', 1, expand=True).rename(columns={0:'A', 1:'B'}))~      | split column to two https://tinyurl.com/pandas-split-column                           |
+| ~time_trimmed = time.map(lambda s: re.split('[-+]', s.strip('[]'))[0])~                | Manipulate column first split by - or + then remove [] then take first part of result |
+| ~data.reset_index().set_index('time').resample('2min').mean().head()~                  | 2 minutes bean and do average to columns                                              |
+| ~pandas.set_option('max_columns',10)~                                                  | spyder and pandas columns width more columns                                          |
+| ~df.corr()~                                                                            | Correlation between all columns                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| **plotting**                                                                           |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| ~df.hist()~                                                                            | show panda histogram on all columns                                                   |
+| ~plt.plot(arr); plt.xlabel('x label'); plt.show()~                                     | Line plot                                                                             |
+| ~plt.scatter(x,y)~                                                                     | Scatter plot                                                                          |
+| ~                                                                                      |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| **Hadoop**                                                                             |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| ResourceManager                                                                        | Single Service in entire cluster runs on one of the master nodes                      |
+| ApplicationMaster                                                                      | One for each application run on cluster runs on master                                |
+| SequenceFile                                                                           | Splittable file format list of keys/values                                            |
+| Secondary NameNode                                                                     | No HA, CheckPoint node, fast recovery of master node for journal fs image             |
+|                                                                                        |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+| **Alexa**                                                                              |                                                                                       |
+|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
+|                                                                                        |                                                                                       |
 * Data
 ** Spreadsheet
 Think of data as a spreadsheet as a table.
@@ -126,7 +150,6 @@ Almost every machine learning algorithm uses optimisation at it's core, optimisi
 
 Have large amounts of data, update to coefficients is for each training instance, not in batch, as we have random data we move quickly.
 * Hadoop
-
 ** Install
    
 In general for hadoop, hive, ping installations you download the tar.gz, set environment variables for its home, and add folders in hdfs if needed.

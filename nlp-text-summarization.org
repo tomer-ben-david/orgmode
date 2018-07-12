@@ -1,13 +1,31 @@
 #+TITLE: NLP Text Summarization
 #+ATTR_LaTeX: :mode inline-math :environment array :align left
+#+STARTUP: inlineimages
+
 
 * Text Summarization
 
 Summarization is the task of producing a shorter version of a document that preserves most of the original document's meaning.
 
+* Text Summarization of this post
+This post is rather long.  Let me text summarize it for you.
+
+Here are a few results
+
+Predicting text of pneumonia:
+Predicting category of text about abortion:
+Naive summarization: 
+Google example summarizations with tensorflow:
+Google example of summarization from paper: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43852.pdf (Sentence Compression by Deletion with LSTMs)
+
+Now you have two options read this or jump directly to the resources section.
+
+There is another concept called ~Sentence Compression~ which is taking a large sentence possibly multiple but few and shortening it.
+
+
 * Disclosure
 
-I just began to study this topic i'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.  Document is in progress and would get updated.
+I just began to study this topic, most of the things i'm either talking about or practicing here i'm doing for the first time.  I'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.  Document is in progress and would get updated.
 
 * Our plan
 
@@ -28,6 +46,7 @@ I always find that in any topic I study the jargon/taxonomy/terminology is one o
 | Term                   | Description                                                                                                              |
 |------------------------+--------------------------------------------------------------------------------------------------------------------------|
 | Text Summarization     | Computer creating meaninful summaries of text                                                                            |
+| Sentence Compression   | Take a large sentence(or few) and compress                                                                               |
 | Google knowledge graph | A enhancement to search where it shows informative data on right panel for search results                                |
 |                        | ex. [[https://www.google.com/intl/es419/insidesearch/features/search/assets/img/snapshot.jpg]]                               |
 | Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing                         |
@@ -35,10 +54,9 @@ I always find that in any topic I study the jargon/taxonomy/terminology is one o
 |                        | (such as products on Amazon.com)" http://vladimiralexiev.github.io/pres/20160329-OpenData-and-Ontologies/index-full.html |
 |                        | Ontology learning (ontology extraction, ontology generation, or ontology acquisition) is the automatic or semi-automatic |
 |                        | relationships between the concepts that these terms represent from a corpus of natural language text                     |
-|                        | creation of ontologies, including extracting the corresponding domain's terms.                                   |
-| nlg                    | Natural Language Generation                                                                                              |
+|                        | creation of ontologies, including extracting the corresponding domain's terms.                                           |
+| NLG                    | Natural Language Generation                                                                                              |
 |                        |                                                                                                                          |
-
 
 
 * Introduction
@@ -496,28 +514,163 @@ Now for the next step we have expected that for each class/topic we are going to
 
 The question is for step 3, whether a model could extract the set of "variable values" from articles and apply a summary from them? I don't have the answer, at least not at my current googling phase.
 
+Step 2 and 3 looks like lot of manual work, is it possible that I could do some googling for better and more automatic solutions or better approaches to this problem of summarization?
+
+* Step 2 Extract Features
+
+As we said in the previous section, extracting the relevant features for a topic is either a heavy manual work or magic-computer work.  You see, for every topic for every discussion there is its own unique set of feature, if its a luggage you have the dimentions, color, applies to low-cost or not, and ofcourse brand name for each of them.  I'm sure there must be a way out of it without programming the universe from scratch again.
+
+After doing some more google search NER looks like a good candidate, at least for part of the problem.  NER? After doing some googling, I have noticed that NER seems like part of the solution, looking at ~spacy.io~ I see they have already implemented some common NER and have API to train new NER, standford NLP libraries also have an NER this time with java.
+
+According to toward data science:
+
+#+BEGIN_QUOTE
+Named-entity recognition (NER) (also known as entity identification, entity chunking and entity extraction) is a sub-task of information extraction that seeks to locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages, etc
+#+END_QUOTE
+
+
+Let's have a look at the abilities of ~spacy~ and what it can do for us and ccording to spacy's documentation:
+
+#+BEGIN_QUOTE
+The default model identifies a variety of named and numeric entities, including companies, locations, organizations and products. You can add arbitrary classes to the entity recognition system, and update the model with new examples.
+#+END_QUOTE
+
+According to it's documentation it can identify the following (and not only) entities: ~PERSON, ORG (companies), PRODUCT, WORK_OF_ART (Books, ..), PERCENT, MONEY, QUANTITY, and a few more~
+
+In addition it allws you to extend and train new models to recognize new entities.
+
+Let's try it out with it's basic usage.
+
+We start with their example:
+
+#+BEGIN_SRC python
+
+import spacy
+
+nlp = spacy.load('en_core_web_sm')
+doc = nlp(u'Apple is looking at buying U.K. startup for $1 billion')
+
+for ent in doc.ents:
+    print(ent.text, ent.start_char, ent.end_char, ent.label_)
+
+#+END_SRC
+
+And when I run it I get:
+
+#+BEGIN_SRC python
+
+(u'Apple', 0, 5, u'ORG')
+(u'U.K.', 27, 31, u'GPE')
+(u'$1 billion', 44, 54, u'MONEY')
+
+#+END_SRC
+
+So it has recognized the company ~Apple~ the geogrpahical entity ~UK~ and a small amount of money: ~$1 billion~
+
+Let's change the input sentence to: ~Google is looking at buying U.K. startup for $1 billion, if it works it might buy Apple~ and see that it identifies now two companies, there result of running the above code is:
+
+#+BEGIN_SRC python
+
+(u'Google', 0, 6, u'ORG')
+(u'U.K.', 28, 32, u'GPE')
+(u'$1 billion', 45, 55, u'MONEY')
+(u'Apple', 84, 89, u'ORG')
+
+#+END_SRC
+
+What if I change from ~Apple~ to ~apple~ that is ~Google is looking at buying U.K. startup for $1 billion, if it works it might buy apple~
+
+#+BEGIN_SRC python
+
+(u'Google', 0, 6, u'ORG')
+(u'U.K.', 28, 32, u'GPE')
+(u'$1 billion', 45, 55, u'MONEY')
+
+#+END_SRC
+
+Aha so ~apple~ with lower case does not count as a company, what if google decides to eat an Apple? with upper case: ~Google is looking at buying U.K. startup for $1 billion, if it works it might eat an Apple~
+
+#+BEGIN_SRC python
+
+(u'Google', 0, 6, u'ORG')
+(u'U.K.', 28, 32, u'GPE')
+(u'$1 billion', 45, 55, u'MONEY')
+(u'Apple', 85, 90, u'ORG')
+
+#+END_SRC
+
+It's a company apparently if Google decides to eat an Apples it's eating a company, interesting.
+
+Let's take some arbitrary product from ebay and feed it into Spacy NER, so i'm taking *~Apple iPhone 8 4.7" Display 64GB UNLOCKED Smartphone US $499.99~* and let's see how spacy's NER parses it:
+
+#+BEGIN_SRC python
+
+(u'Apple iPhone 8 4.7', 0, 18, u'ORG')
+(u'64', 28, 30, u'CARDINAL')
+(u'UNLOCKED', 33, 41, u'PERSON')
+(u'Smartphone', 42, 52, u'DATE')
+(u'US', 53, 55, u'GPE')
+(u'499.99', 57, 63, u'MONEY')
+
+#+END_SRC
+
+So the org was identified as ~Apple iPhone 8 4.7~ not so good i'm not aware of such a company it should have been a product, 64 was identieid as ~Cardinal~ this is good, ~UNLOCKED~ as a person, ~Smartphone~ as date, and ~US~ as geography, and 499.99 as money, this is partially good but definetly not satisfactory.
+
+The good thing to remember is that spacy said they have a way to train new models so possibly with additional training for more domain specific items we could reach better results.
+
+
+
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   fig:SED-HR4049
+[[https://kanbanflow.com/img/avatars/22/man12.png]]
+ 
+
+* Sentence Compression
+
+While googling some more I've noticed there is another approach to text summarization called: "Sentence Compression", this approach is more compelling for me because from all the search results I get it looks like a fully automatic process (except for training).
+Note that although we have text summarization there is another important topic called ~Sentence Compression~ in this case we are taking a rather small text and - compressing it, deleting undeeded words.
+
+#+BEGIN_QUOTE
+Sentence compression is a paraphrasing task where the goal is to generate sentences shorter than given while preserving the essential content
+
+Sentence compression is a standard NLP task where the goal is to generate a shorter paraphrase of a sentence. Dozens of systems have been introduced in the past two decades and most of them are deletion-based: generated compressions are token subsequences of the input sentences (Jing, 2000; Knight & Marcu, 2000; McDonald, 2006; Clarke & Lapata, 2008; Berg-Kirkpatrick et al., 2011, to name a few).
+#+END_QUOTE
+
+References:
+
+[[https://www.aclweb.org/anthology/D/D13/D13-1155.pdf][Overcoming the Lack of Parallel Data in Sentence Compression]]
+[[https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43852.pdf][Sentence Compression by Deletion with LSTMs]]
+
 * Resources
 
 
 
-|-----------------------------------------------------------------+--------------------------------------------------------------------------------|
-| resource                                                        | link                                                                           |
-|-----------------------------------------------------------------+--------------------------------------------------------------------------------|
-| Models Zoo - Ready Made Models                                  | https://modelzoo.co/                                                           |
-| A Neural Attention Model for Abstractive Sentence Summarization | https://arxiv.org/abs/1509.00685                                               |
-| TensorFlow-Summarization                                        | https://github.com/thunlp/TensorFlow-Summarization                             |
-| Webscrapper                                                     | http://webscraper.io/                                                          |
-| Dzone on text summarization                                     | https://dzone.com/articles/a-guide-to-natural-language-processing-part-3       |
-| DataSet                                                         | https://duc.nist.gov/duc2004/                                                  |
-| How do I download DUC dataset for text summarization?           | https://www.quora.com/How-do-I-download-DUC-dataset-for-text-summarization     |
-| **EXAMPLE**: Keras text summarization on news                   | https://github.com/chen0040/keras-text-summarization                           |
-| Example: NLTK Simple Summarization                              | https://dev.to/davidisrawi/build-a-quick-summarizer-with-python-and-nltk       |
-| Example: Text Summarize ROUGE scoring                           | http://forum.opennmt.net/t/text-summarization-on-gigaword-and-rouge-scoring/85 |
-| Software Engineering Daily                                      |                                                                                |
-| SumBasic Clustering                                             | http://www.cs.middlebury.edu/~mpettit/project.html                             |
-| Keras Text Classification                                       | https://medium.com/skyshidigital/getting-started-with-keras-624dbf106c87       |
-| NLP for hackers TextRank for TextSummarization                  | https://nlpforhackers.io/textrank-text-summarization/                          |
-|                                                                 |                                                                                |
+|-----------------------------------------------------------------+---------------------------------------------------------------------------------|
+| resource                                                        | link                                                                            |
+|-----------------------------------------------------------------+---------------------------------------------------------------------------------|
+| Sentence Compression by Deletion with LSTMs                     | https://research.google.com/pubs/archive/43852.pdf                              |
+| Models Zoo - Ready Made Models                                  | https://modelzoo.co/                                                            |
+| A Neural Attention Model for Abstractive Sentence Summarization | https://arxiv.org/abs/1509.00685                                                |
+| TensorFlow-Summarization                                        | https://github.com/thunlp/TensorFlow-Summarization                              |
+| Webscrapper                                                     | http://webscraper.io/                                                           |
+| Dzone on text summarization                                     | https://dzone.com/articles/a-guide-to-natural-language-processing-part-3        |
+| DataSet                                                         | https://duc.nist.gov/duc2004/                                                   |
+| Google Research DataSets for Sentence Compression               | https://github.com/google-research-datasets/sentence-compression                |
+| How do I download DUC dataset for text summarization?           | https://www.quora.com/How-do-I-download-DUC-dataset-for-text-summarization      |
+| **EXAMPLE**: Keras text summarization on news                   | https://github.com/chen0040/keras-text-summarization                            |
+| Example: NLTK Simple Summarization                              | https://dev.to/davidisrawi/build-a-quick-summarizer-with-python-and-nltk        |
+| Example: Text Summarize ROUGE scoring                           | http://forum.opennmt.net/t/text-summarization-on-gigaword-and-rouge-scoring/85  |
+| SumBasic Clustering                                             | http://www.cs.middlebury.edu/~mpettit/project.html                              |
+| Keras Text Classification                                       | https://medium.com/skyshidigital/getting-started-with-keras-624dbf106c87        |
+| NLP for hackers TextRank for TextSummarization                  | https://nlpforhackers.io/textrank-text-summarization/                           |
+| Track NLP Status and Progress - Summarization                   | https://github.com/sebastianruder/NLP-progress/blob/master/summarization.md     |
+| Sentence Compression and Text Summarization - Many resources    | https://github.com/mathsyouth/awesome-text-summarization                        |
+| Google AI Portal                                                | https://ai.google                                                               |
+| Text Summarization Thesis                                       | https://tinyurl.com/text-summarization-thesis                                   |
+| Text Compression Deletion Impl based on Katja Filippova Paper   | https://github.com/zhaohengyang/Generate-Parallel-Data-for-Sentence-Compression |
+| Overcoming the Lack of Parallel Data in Sentence Compression    | https://www.aclweb.org/anthology/D/D13/D13-1155.pdf                             |
+| Toward Data Science NER                                         | https://tinyurl.com/towarddatascience-ner                                                                                |
+|                                                                 |                                                                                 |
 
 * Ideas
 extraction can also be good for us we just extract text
@@ -567,3 +720,9 @@ bazel-bin/textsum/seq2seq_attention \
 
 #+END_SRC
 
+
+* On Rule Based Systems
+Rule based systems are great, especially to start with, and if they satisfy you you can continue with them.  Some limitations however:
+
+1. The number of options is limited by the rules you set, new ~words~ could appear in your domain, new items, how would you handle them with rule based, its only if it has a dynamic part.
+1. What about errors meaning if someone wrote some text and had some typos, a rule based system is more strict, if someone wrote Apple and then Aplpe how would you know its the same brand with a rule based system?

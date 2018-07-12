@@ -61,7 +61,6 @@
 |                                     |                                     |                                                          |
 | General                             |                                     |                                                          |
 
-
 * CS Patterns
 
 |------------------------------------------------------------------------+------------------------|
@@ -132,61 +131,68 @@
  |                                          |          |                                          |
  |                                          |          |                                          |
 
+** Sort
+*** QuickSort
+    recurse: choose pivot, forwardI++, backwardI++, swap if left smaller pivot nad right bigger pivot.
+** BFS
 
+ *+BEGIN_SRC java
+ Lpublic int findeftMostNode(TreeNode root) {
+     Queue<TreeNode> queue = new LinkedList<>();
+     queue.add(root);
+     while (!queue.isEmpty()) {
+         root = queue.poll();
+         if (root.right != null)
+             queue.add(root.right);
+         if (root.left != null)
+             queue.add(root.left);
+     }
+     return root.val;
+ }
+ *+END_SRC
 
-* Sort
-** QuickSort
-   recurse: choose pivot, forwardI++, backwardI++, swap if left smaller pivot nad right bigger pivot.
-* BFS
+*** queue
 
-*+BEGIN_SRC java
-Lpublic int findeftMostNode(TreeNode root) {
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.add(root);
-    while (!queue.isEmpty()) {
-        root = queue.poll();
-        if (root.right != null)
-            queue.add(root.right);
-        if (root.left != null)
-            queue.add(root.left);
-    }
-    return root.val;
-}
-*+END_SRC
+**** insert root
 
-** queue
+***** repeat
 
-*** insert root
+****** pop node
 
-**** repeat
+****** insert children
 
-***** pop node
+** BTree
+    In computer science, a B-tree is a self-balancing tree data structure that keeps data sorted and allows searches, sequential access, insertions, and deletions in logarithmic time. The B-tree is a generalization of a binary search tree in that a node can have more than two children. ![btree](http://www.virtualmachinery.com/images/tree.gif)
+** infix
 
-***** insert children
+*** postfix/prefix
 
-* BTree
-   In computer science, a B-tree is a self-balancing tree data structure that keeps data sorted and allows searches, sequential access, insertions, and deletions in logarithmic time. The B-tree is a generalization of a binary search tree in that a node can have more than two children. ![btree](http://www.virtualmachinery.com/images/tree.gif)
-* infix
+**** convert to postfix/prefix
 
-** postfix/prefix
+ postfix and prefix do not need parenthasis
+ A + B * C => B C * +
+ to convert: operands stay in same relative places, only operators change positions.
 
-*** convert to postfix/prefix
+***** no need parenthasis
 
-postfix and prefix do not need parenthasis
-A + B * C => B C * +
-to convert: operands stay in same relative places, only operators change positions.
+**** evaluate
 
-**** no need parenthasis
+ push operands as long as we have operands once we have operator pop 2 operands and run operation on them.
 
-*** evaluate
+** Resources
 
-push operands as long as we have operands once we have operator pop 2 operands and run operation on them.
+*** Problem solving with algorithms and data structures
 
-* Resources
+ online concise python book
 
-** Problem solving with algorithms and data structures
-
-online concise python book
+* System Design
+|-----------------+-----------------------------------------------------------------------------|
+| item            | description                                                                 |
+|-----------------+-----------------------------------------------------------------------------|
+| DB Federation   | Splits databases by function https://tinyurl.com/dbfederation               |
+| Sharding        | Each DB subset of data same function multiple db different sections of rows |
+| Denormalizatoin | Improve read performance in experse of write performance                 |
+|                 |                                                                             |
 
 * Java
   ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -231,6 +237,36 @@ online concise python book
                                                         ││ invoke dyn  │ │             │ │                               
                                                         │└─────────────┘ └─────────────┘ │                               
                                                         └────────────────────────────────┘                               
+|----------------------+-------------------------------------------------------------------------------------------------------------------|
+| item                 | desc                                                                                                              |
+|----------------------+-------------------------------------------------------------------------------------------------------------------|
+|                      |                                                                                                                   |
+| **Basic**            |                                                                                                                   |
+| Integer              | 32 bit signed (all is signed in java) so effectively (2^31)-1                                                     |
+|                      |                                                                                                                   |
+| **java8**            |                                                                                                                   |
+|                      |                                                                                                                   |
+| lambda               | interface with single abstract method (can have in addition static,default), parameters, return type match lambda |
+|                      |                                                                                                                   |
+| **JVM**              |                                                                                                                   |
+|                      |                                                                                                                   |
+| Internal Threads     |                                                                                                                   |
+| VM Thread            | Runs safe-point stop-the-world operations (like major gc, thread dumps, thread suspension)                        |
+| Periodic task thread | Runs Timer events like interrupts to schedule execution of periodic operations                                    |
+| GC Threads           |                                                                                                                   |
+| Compiler threads     | byte code --> native code at runtime                                                                              |
+| Signal Dispatcher    | Receives external signals                                                                                         |
+|                      |                                                                                                                   |
+| Threads Components   | PC, stack, frame per method executed, native stack, stack restriction (stackoverflow)                             |
+| Frame                | New frame per method invocation, local vars, return val, operand stack, reference to runtime constant pool        |
+| Dynamic Linking      | In C++ at compile time: objects --> one-object symbols --> address, at java this is at runtime                    |
+|                      |                                                                                                                   |
+| GC                   | The permanent generation is collected every time old generation is collected, it happens when they are full       |
+|                      |                                                                                                                   |
+| **ClassLoader**      | JVM Startsup BootstrapClassLoader Loads Main causes Loading, Linking, Initializing additional classes             |
+|                      |                                                                                                                   |
+|                      |                                                                                                                   |
+
 ** General
 *** ~jps -l~ Show current java processes.
 ** Performance
@@ -424,6 +460,23 @@ more threads than can run.
 goes together with involuntary context switching we have more threads than can be handled.
 
 *** resources
+
+* Security
+
+|------------------+------------------------------------------------------------------------------------------------------|
+| Item             | Description                                                                                          |
+|------------------+------------------------------------------------------------------------------------------------------|
+| *OAuth2*         | https://aaronparecki.com/oauth-2-simplified/                                                         |
+|------------------+------------------------------------------------------------------------------------------------------|
+| Token            | End goal to get token then use it with ~Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia~                |
+| Register App     | First step to register your app give redirect_url                                                    |
+| https            | As opposed to OAuth1 which used crypt here we must use https                                         |
+| Client id/secret | App receives client id and secret, secret used when server makes the call not in webapp/mobile       |
+| 1st request user | User given url that asks him to authenticate to server with redirect back uri and ~&state=rand27873~ |
+| Access code      | We get back ok with access code to redirect url                                                      |
+| 2nd request app  | App now goes to server with received ~auth-code~ and same ~state~ to exchange for token              |
+| Token            | This is it we got the token                                                                          |
+|------------------+------------------------------------------------------------------------------------------------------|
 
 * Softskills
 ** meetings
