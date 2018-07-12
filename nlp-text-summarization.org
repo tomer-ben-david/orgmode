@@ -2,6 +2,21 @@
 #+ATTR_LaTeX: :mode inline-math :environment array :align left
 #+STARTUP: inlineimages
 
+* After completing this post you will know
+
+1. Be able to run a naive basic non machine learning code that summarizes text based on TFIDF.
+1. Why such naive implementation work only partially.
+1. The 3 main methods for text summarization
+1.1 Text Summarization a brief overview of techniques (from published paper).
+1.1 The difference between Text Summarization and Sentence Compression 
+1.1 NRE based summarization
+1. Run code to identify the topic of a text.
+1. How wallmarts handles attributes extraction from products titles in eCommerce.
+1. Run code that extracts common NER's (brand, money, location) from a sentence.
+1. What SumBasic is
+1. Have plenty of resources to continue from here.
+
+Let's get started.
 
 * Text Summarization
 
@@ -624,7 +639,113 @@ The good thing to remember is that spacy said they have a way to train new model
 #+NAME:   fig:SED-HR4049
 [[https://kanbanflow.com/img/avatars/22/man12.png]]
  
+* Paper Summary - Attribute Extraction from Product Titles in eCommerce
+With no syntactic structure in product titles it's a challening problem.  In this paper he concentrates on brand NER extraction.
 
+Vocabulary
+
+|-----------------+--------------------------------------------------------------------------------------------------|
+| Item            | Description                                                                                      |
+|-----------------+--------------------------------------------------------------------------------------------------|
+| Product         | any commodity which may be sold by a retailer.  ex. IPhone.                                      |
+| Attribute       | a feature that describes a specific property of a product or a product listing ex. color, brand. |
+| Attribute Value | a particular value assumed by the attribute. For example, for the product title                  |
+|-----------------+--------------------------------------------------------------------------------------------------|
+
+Example: ~Apple iPad Mini 3 16GB Wi-Fi Refurbished, Gold~
+
+|----------------+-----------------|
+| Attribute Name | Attribute Value |
+|----------------+-----------------|
+| Brand          | Apple           |
+| Product        | iPad Mini 3     |
+| Color          | Gold            |
+| RAM            | 16GB            |
+| Condition      | Refurbished     |
+|----------------+-----------------|
+
+Getting both those attributes names and values automatically without rules from freetext product titles is, challenging.
+
+The common use case which is described in this paper is:
+
+1. User searches for t-shirt
+1. User filters by color red (checkbox/facet)
+1. Results should contain only red tshirts, note that filtering is on unstructured title/description.
+
+The following challenges are presented by the paper:
+
+1. Lack of syntactic structure
+
+#+BEGIN_QUOTE Unlike English prose, product titles do not adhere to a syntactic structure. They may be a concatenation of several nouns and adjectives as well as product specific identifiers and acronyms. Verbs tend to be missing and there is no standardized way of handling letter case. For example, consider the following titles of actual Walmart products (the brand names are in bold). 
+– Chihuahua Bella Decorative Pillow by Manual Woodworkers and
+Weavers - SLCBCH
+– Real Deal Memorabilia BCosbyAlbumMF Bill Cos
+
+...
+
+Due to the diversity of products sold in any leading eCommerce site, product titles do not follow any specific composition
+
+...
+
+different products may contain slightly varying spellings of the same brand
+
+...
+
+Some titles may contain abbreviations of brand names
+
+...
+
+Brand names in titles may contain typographical errors
+
+...
+
+generic or unbranded products.
+
+...
+
+There are categories of products for which brand name is not an important attribute.
+
+...
+
+The list of brand names relevant to a given product catalog is constantly changing
+
+...
+
+Collecting expert feedback either for the purposes of generating training data or validating model generated labels is subject to inter-annotator disagreement
+#+END_QUOTE
+
+You get the idea.
+
+The paper continues and describes other approaches such as:
+** Other Approaches
+*** Dictionary based lookup
+
+#+BEGIN_QUOTE
+prepare a curated lexicon of attribute values and given a product title, scan it to find a value from the list
+#+END_QUOTE
+
+Alas:
+
+1. The curated list need to be constantly updated
+1. For certain attributes the number of values of a single attributes is the order of number of products (part number).
+1. Attribute value may appear in multiple forms - curated list need to keep track of all variations
+1. Multiple matches - the system need to decide which value to choose
+
+*** Crowd Sourcing
+
+Ineefective - Scale of retail catalog millions of products, need to standartizise attribute values, expert intervention needed
+
+*** Rule based extraction
+
+With texts having grammatical structure rule based systems had success.  However:
+
+#+BEGIN_QUOTE
+product titles do not conform to a syntactical structure or grammar unlike news articles or prose
+#+END_QUOTE
+
+So maybe apply rule based to product description and not only title? but what if description refers to competitors?
+
+Creating a maintaining rules of hundreds or thousands of attributes is challenging.  *Smells like machine learnig models are needed.*
 * Sentence Compression
 
 While googling some more I've noticed there is another approach to text summarization called: "Sentence Compression", this approach is more compelling for me because from all the search results I get it looks like a fully automatic process (except for training).
@@ -669,7 +790,11 @@ References:
 | Text Summarization Thesis                                       | https://tinyurl.com/text-summarization-thesis                                   |
 | Text Compression Deletion Impl based on Katja Filippova Paper   | https://github.com/zhaohengyang/Generate-Parallel-Data-for-Sentence-Compression |
 | Overcoming the Lack of Parallel Data in Sentence Compression    | https://www.aclweb.org/anthology/D/D13/D13-1155.pdf                             |
-| Toward Data Science NER                                         | https://tinyurl.com/towarddatascience-ner                                                                                |
+| Toward Data Science NER                                         | https://tinyurl.com/towarddatascience-ner                                       |
+| Wallmart Ajinkya Product Attributes                             | https://tinyurl.com/ajnkya-product-attributes                                   |
+| Wallmart Ajinkya Product Attributes Paper                       | https://arxiv.org/pdf/1608.04670.pdf                                            |
+| Current state of NLP Summarization                              | https://github.com/sebastianruder/NLP-progress/blob/master/summarization.md     |
+| Current state of NLP                                            | https://github.com/sebastianruder/NLP-progress                                  |
 |                                                                 |                                                                                 |
 
 * Ideas
