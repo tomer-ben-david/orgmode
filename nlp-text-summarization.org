@@ -7,6 +7,7 @@
 1. Be able to run a naive basic non machine learning code that summarizes text based on TFIDF.
 2. Why such naive implementation works very partially.
 3. The 3 main methods for text summarization
+
   3.1 **Text Summarization** Summarize a blokc of text, a brief overview of techniques (from published paper).
 
   3.2 **Sentence Compression** This one aims to compress a single sentence.
