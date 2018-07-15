@@ -1,4 +1,4 @@
-#+TITLE: NLP Text Summarization
+#+TITLE: NLP Text Summarization, Sentence Compression, NER Summarization
 #+ATTR_LaTeX: :mode inline-math :environment array :align left
 #+STARTUP: inlineimages
 
@@ -37,7 +37,7 @@ Sounds lke a lot, let's get started.
 
 * Disclosure
 
-I just began to study this topic, most of the things i'm either talking about or practicing here i'm doing for the first time.  I'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.  Document is in progress and would get updated.
+I just began to study this topic, most of the things i'm either talking about or practicing here i'm doing for the first time.  I'm by no means an expert and not even a novice :).  There would be mistakes in that article.  I will share my learning and discoveries with you.  Document is in progress and would get updated.  In addition while running most of the examples it looks like nothing predicted well all cases I entered, there were always mistakes!
 
 * Our plan
 
