@@ -5,38 +5,31 @@
 * After completing this post you will know
 
 1. Be able to run a naive basic non machine learning code that summarizes text based on TFIDF.
-1. Why such naive implementation work only partially.
+1. Why such naive implementation works very partially.
 1. The 3 main methods for text summarization
-1.1 Text Summarization a brief overview of techniques (from published paper).
-1.1 The difference between Text Summarization and Sentence Compression 
-1.1 NRE based summarization
-1. Run code to identify the topic of a text.
+1.1 **Text Summarization** Summarize a blokc of text, a brief overview of techniques (from published paper).
+1.1 **Sentence Compression** This one aims to compress a single sentence.
+1.1 **NER based summarization** Look at the entities of the text (price, brand, product) and summarize by it.
+1. Extractive text summarizer vs sematic summarizer.
+1. Run code to identify the topic of a text and brand with deep learning. (online demo available).
+1. Run code to summarize multiple sentences with takehe github project.
 1. How wallmarts handles attributes extraction from products titles in eCommerce.
 1. Run code that extracts common NER's (brand, money, location) from a sentence.
 1. What SumBasic is
-1. Have plenty of resources to continue from here.
+1. Have plenty of resources and directions to continue from here.
 
-Let's get started.
 
-* Text Summarization
+Here are some of the examples we are going to go through:
 
-Summarization is the task of producing a shorter version of a document that preserves most of the original document's meaning.
+1. Naive summarizatoin of a wikipedia page about leonardo da vinci.
+1. Extract topic.
+1. Detect what is the topic of pneumonia wikipedia article.
+1. Find out the category and brand of an amazon product.
+1. Detect what is the topic of abortion wikipedia article.
+1. Summarize news about clinton.
+1. Use spacy to extract features of text.
 
-* Text Summarization of this post
-This post is rather long.  Let me text summarize it for you.
-
-Here are a few results
-
-Predicting text of pneumonia:
-Predicting category of text about abortion:
-Naive summarization: 
-Google example summarizations with tensorflow:
-Google example of summarization from paper: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43852.pdf (Sentence Compression by Deletion with LSTMs)
-
-Now you have two options read this or jump directly to the resources section.
-
-There is another concept called ~Sentence Compression~ which is taking a large sentence possibly multiple but few and shortening it.
-
+Sounds lke a lot, let's get started.
 
 * Disclosure
 
@@ -44,9 +37,10 @@ I just began to study this topic, most of the things i'm either talking about or
 
 * Our plan
 
-1. Introduction - meet text summarization.
+So we want to understand text summarization / sentence compression / NER based summarization, let's have a plan:
+
 1. The jargon.
-1. Two published researches.
+1. Published researches and references to them.
 1. History of text summarization.
 1. The different methods.
 1. Let's write some code.
@@ -65,12 +59,7 @@ I always find that in any topic I study the jargon/taxonomy/terminology is one o
 | Google knowledge graph | A enhancement to search where it shows informative data on right panel for search results                                |
 |                        | ex. [[https://www.google.com/intl/es419/insidesearch/features/search/assets/img/snapshot.jpg]]                               |
 | Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing                         |
-|                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their features                                 |
-|                        | (such as products on Amazon.com)" http://vladimiralexiev.github.io/pres/20160329-OpenData-and-Ontologies/index-full.html |
-|                        | Ontology learning (ontology extraction, ontology generation, or ontology acquisition) is the automatic or semi-automatic |
-|                        | relationships between the concepts that these terms represent from a corpus of natural language text                     |
-|                        | creation of ontologies, including extracting the corresponding domain's terms.                                           |
-| NLG                    | Natural Language Generation                                                                                              |
+|                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their | NLG                    | Natural Language Generation                                                                                              |
 |                        |                                                                                                                          |
 
 
@@ -100,20 +89,7 @@ Reference: [[https://github.com/tensorflow/models/tree/master/research/textsum][
 
 Yes, most text summarization train data, research and example models are focused on news, if you are not in news business most chances you need to get your own data and retrain, no ready models for you.
 
-How do we (humans, although  some bots are also reading this..) summarize text?
-
-1. We read it mostly or fully, we had better do that if we want a good summary.
-1. We understand it's meaning.
-1. We understand it's context.
-1. We read or already have read similar documents.
-1. We think about it.
-1. We put in intuitiveness.
-1. We put in knowledge gathered over the years.
-1. We apply templates.
-1. We know or assume we know what our audience expects.
-1. We highlight important phrases, words, sentences.
-1. We possibly sleep on it to get some more ideas.
-1. We do more things but I had to stop at some point.
+How do we (humans, although  some bots are also reading this..) summarize text? We read it mostly or partially, understand, fill in context, reread, read other docs, think, put in intuiveness, apply templates (finance), assume audience expectation, highlight important items, sleep on it, i have to stop here..
 
 And then:
 
@@ -125,16 +101,12 @@ or as "Text Summarization Techniques" paper says:
 a text that is produced from one or more texts, that conveys important information in the original text(s), and that is no longer than half of the original text(s) and usually, significantly less than that
 #+END_QUOTE
 
-How do they (computers) summarize text?
+How do they (computers) summarize text, taking into account the above process was so complex!
 
 Who knows!
 
 Can they do that?
-If yes can they do that in a satisfactory manner?
-Will they have embarrassing mistakes?
-How far are they from humans? Or maybe how advanced?
-
-Well, i'm not sure there are answers to all the above questions, but, let's find out together, this is what we are here for.
+If yes can they do that in a satisfactory manner? Will they have embarrassing mistakes? How far are they from humans? Or maybe how advanced?
 
 * First Paper - Text Summarization Techniques
 
@@ -146,19 +118,13 @@ This is the paper that we need to get started, their premise is:
 We review the different processes for summarization and describe the effectiveness and shortcomings of the different methods.
 #+END_QUOTE
 
-Sounds promising for a start, in addition quickly scanning the paper I see no math formula, for me this means I'll be able to finish this paper in less than a year :) Yay!
-
-* Updated plan
-
-* The importance of ontology
-
-If you take a look at leonardo right hand side summary in wikipedia or google summary you would see they managed to extract the relevant properties and fill it in.
+Sounds promising we would get back to this paper, but I want to scan the topic some more and let's even start with a naive exmaple.
 
 * Naive Code
 
 **Note, in our use case we are less interested in human complete sentences but more of a few words together which summarize the topic.**
 
-In our first naive code implementation here is our plan, no machine learning, just take some text and try to summarize it, somehow.  Let's see:
+In our first naive code implementation, no machine learning, just take some text and try to summarize it, somehow, common sense.  Let's see:
 
 Step 1: Here is our bunch of text to summarize:
 
@@ -170,13 +136,7 @@ Leonardo di ser Piero da Vinci (Italian: [leoˈnardo di ˌsɛr ˈpjɛːro da (v)
 
 Many historians and scholars regard Leonardo as the prime exemplar of the "Universal Genius" or "Renaissance Man", an individual of "unquenchable curiosity" and "feverishly inventive imagination",[4] and he is widely considered one of the most diversely talented individuals ever to have lived.[5] According to art historian Helen Gardner, the scope and depth of his interests were without precedent in recorded history, and "his mind and personality seem to us superhuman, while the man himself mysterious and remote".[4] Marco Rosci notes that while there is much speculation regarding his life and personality, his view of the world was logical rather than mysterious, and that the empirical methods he employed were unorthodox for his time.[6]
 
-Born out of wedlock to a notary, Piero da Vinci, and a peasant woman, Caterina, in Vinci in the region of Florence, Leonardo was educated in the studio of the renowned Florentine painter Andrea del Verrocchio. Much of his earlier working life was spent in the service of Ludovico il Moro in Milan. He later worked in Rome, Bologna and Venice, and he spent his last years in France at the home awarded to him by Francis I of France.
-
-Leonardo was, and is, renowned primarily as a painter. Among his works, the Mona Lisa is the most famous and most parodied portrait[7] and The Last Supper the most reproduced religious painting of all time.[4] Leonardo's drawing of the Vitruvian Man is also regarded as a cultural icon,[8] being reproduced on items as varied as the euro coin, textbooks, and T-shirts.
-
-A painting by Leonardo, Salvator Mundi, sold for a world record $450.3 million at a Christie's auction in New York, 15 November 2017, the highest price ever paid for a work of art.[9] Perhaps fifteen of his paintings have survived.[nb 1] Nevertheless, these few works, together with his notebooks, which contain drawings, scientific diagrams, and his thoughts on the nature of painting, compose a contribution to later generations of artists rivalled only by that of his contemporary, Michelangelo.
-
-Leonardo is revered for his technological ingenuity. He conceptualised flying machines, a type of armoured fighting vehicle, concentrated solar power, an adding machine,[10] and the double hull. Relatively few of his designs were constructed or even feasible during his lifetime, as the modern scientific approaches to metallurgy and engineering were only in their infancy during the Renaissance. Some of his smaller inventions, however, such as an automated bobbin winder and a machine for testing the tensile strength of wire, entered the world of manufacturing unheralded. A number of Leonardo's most practical inventions are nowadays displayed as working models at the Museum of Vinci. He made substantial discoveries in anatomy, civil engineering, geology, optics, and hydrodynamics, but he did not publish his findings and they had no direct influence on later science.[11]"""
+Born out of wedlock to a notary, Piero da Vinci, and a peasant woman, Caterina, in Vinci in the region of Florence, Leonardo was educated in the studio of the renowned Florentine painter Andrea del Verrocchio. Much of his earlier working life was spent in the service of Ludovico il Moro in Milan. He later worked in Rome, Bologna and Venice, and he spent his last years in France at the home awarded to him by Francis I of France."""
 
 #+END_SRC
 
@@ -186,7 +146,7 @@ First, how would you summarize this text, let's say limiting to 7 words?
 
 I would say this: 
 
-Human summary: "Leoardo Da Vinci, italian, renaisssane, painter, sculpturer"
+My modest summary: "Leoardo Da Vinci, italian, renaisssane, painter, sculpturer"
 
 Now lets move on with our naive code implementation:
 
@@ -337,8 +297,9 @@ A few points to note:
 1. This is extractive text summarizer we didn't invent anything, no semantic understanding, we just selected words.
 1. There is a better algorithm called ~SumBasic~
 
-* SumBasic 
+The difference between extractive and semantic is that extractive takes phrases from the text so in that sense it cannot go wrong it will take only things which preexisted in the text, semantic will try to actually understand the text and compose new text.
 
+* SumBasic 
 
 Here is the formula for sum basic:
 
@@ -365,6 +326,61 @@ This is very similar to what we did with words without knowing ~SumBasic~! In ou
 
 SumBasic then continues to update each word probability as it's multiplication by itself (reduce it) so we can now pick other sentences, and it keeps on with this loop until we picked as much sentences as we meant to.
 
+* Multi Sentence Compression
+
+There is an intersting github repo named takehe (based on papers below) let's give it a shot:
+
+#+BEGIN_QUOTE
+takahe is a multi-sentence compression module. Given a set of redundant sentences, a word-graph is constructed by iteratively adding sentences to it. The best compression is obtained by finding the shortest path in the word graph. The original algorithm was published and described in:
+
+Katja Filippova, Multi-Sentence Compression: Finding Shortest Paths in Word Graphs, Proceedings of the 23rd International Conference on Computational Linguistics (Coling 2010), pages 322-330, 2010.
+#+END_QUOTE
+
+Let's give it a shot:
+
+#+BEGIN_SRC bash
+conda create -n takahe-py2 python=2.7
+conda activate takahe-py2
+conda install -y graphviz pygraphviz spyder numpy networkx
+git clone https://github.com/boudinfl/takahe
+pip install secretstorage
+pip install networkx==1.1
+git clone https://github.com/boudinfl/takahe
+#+END_SRC
+
+now we give it some text but it requires some annotated text:
+
+#+BEGIN_SRC python
+
+["The/DT wife/NN of/IN a/DT former/JJ U.S./NNP president/NN 
+#Bill/NNP Clinton/NNP Hillary/NNP Clinton/NNP visited/VBD China/NNP last/JJ 
+#Monday/NNP ./PUNCT", "Hillary/NNP Clinton/NNP wanted/VBD to/TO visit/VB China/NNP 
+#last/JJ month/NN but/CC postponed/VBD her/PRP$ plans/NNS till/IN Monday/NNP 
+#last/JJ week/NN ./PUNCT", "Hillary/NNP Clinton/NNP paid/VBD a/DT visit/NN to/TO 
+#the/DT People/NNP Republic/NNP of/IN China/NNP on/IN Monday/NNP ./PUNCT",
+"Last/JJ week/NN the/DT Secretary/NNP of/IN State/NNP Ms./NNP Clinton/NNP 
+#visited/VBD Chinese/JJ officials/NNS ./PUNCT"]
+
+#+END_SRC
+
+And the summarization results are:
+
+#+BEGIN_SRC python
+
+0.234 hillary clienton visited china last week.
+0.247 hillary clienton visited china on monday #last week.
+.
+.
+.
+#0.306 hillary clinton paid a visit to #the people of republic of china last week.
+.
+.
+.
+ 
+#+END_SRC
+
+We are still summarizing news :( we need to revisit our plan and github and google searches :)
+
 * Updated Plan
 
 Now that we did a variation on SumBasic for words instead of sentences, lets move on with more examples appearing on the web.  Namely algorithms that do more of understanding of the text and compose new text and not just choose and extract ready made summary from our existing text.
@@ -375,13 +391,15 @@ Is the text about an artist? is the text about a car is the text about an electr
 
 **Step 2: Manual: Idetify the main features of the topic**
 
-That is the ontology of the topic.
-We have identified that the text is about an electric cleaning machine this means, we need these features (this is the task to identify the features)
+That is the ontology, topic we want to identify the topic once we ge tthe topic we can get better at the summarization (you see we get to understand the text).
+We have identified that the text is about an electric washin cleaning machine this means, we need these features (this is the task to identify the features)
 
 1. Watts
 1. Target
 1. Price
 1. Size
+
+But how can we get the topic? how can we get then the relevant features?
 
 **Step 3: Given an article identify topic fill in feature values**
 
@@ -391,12 +409,7 @@ So given an article identify:
 1. What are the features of that topic?
 1. Fill in the values from the article about the features of that topic.
 
-
-<---- **This is were I am now i'm trying to do the steps 1,2,3 and come up with a good summary, i will first identify the category of the text, then based on category I will identify the features, then based on text I will extract the values to fill into the template (like the right hand side google/wikipedia summary card) then this would become the summary!** so this would involve some more heavy coding and thinkin... ----->
-
-** Extraction
-
- You take existing phrases from text, this is both good and bad.  Good because you don't have to do any nlg and bad because who promises a good summary is extracted from the sentences already in the document..
+Sounds like a plan!
 
 * Step 1: Identify Article Topic
 
@@ -406,7 +419,7 @@ This is also called **Text Classification**.  There 3 main categories to achieve
 1. Standard Machine Learning Models
 1. Deep Learning  
 
-I don't have time for rules, my laptop is too slow for deep learning and i'm not sure I have enought data, so i'll go with option 2 standard models.
+I don't have time for rules, my laptop is too slow for deep learning and i'm not sure I have enought data, si'll go with option 2 standard models and then move on to deep learning on EC2.
 
 There is a great example (i'm doing this for the first time) at sklearn website for how to build a model to classify text. [[http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html]] I'm simply going to use and run it.
 
@@ -639,6 +652,250 @@ The good thing to remember is that spacy said they have a way to train new model
 #+NAME:   fig:SED-HR4049
 [[https://kanbanflow.com/img/avatars/22/man12.png]]
  
+* Code - Product categorization and named entity recognition 
+
+The code below from github ProductNER is meant to automatically extract features from product titles and descriptions. Below we explain how to install and run the code, and the implemented algorithms. We also provide background information including the current state-of-the-art in both sequence classification and sequence tagging, and suggest possible improvements to the current implemention. Let's analyze what its doing! The code uses deep learning for NLP and our topic Deep Learning is especially important as it provides better perforemance, by models though may require more data but it requires less linguistic expertise to train and operate.  In addition deep learning models can learn the features themselfs from the rawtext rather than having an expert extract them even for standard machine learning this is required.
+
+#+BEGIN_QUOTE
+In general our manually designed features tend to be overspecified, incomplete, take a long time to design and validated, and only get you to a certain level of performance at the end of the day. Where the learned features are easy to adapt, fast to train and they can keep on learning so that they get to a better level of performance they we’ve been able to achieve previously.
+#+END_QUOTE
+/Chris Manning, Lecture 1 – Natural Language Processing with Deep Learning, 2017./
+
+** Input Data
+
+According to documentation we first run: ~python parse.py metadata.json~, let's see what ~parse.py~ does:
+
+Let's see first how our input looks like, its called ~metadata.json~ and here are it's first few lines:
+
+#+BEGIN_SRC javascript
+{'asin': '0001048791', 'salesRank': {'Books': 6334800}, 'imUrl': 'http://ecx.images-amazon.com/images/I/51MKP0T4DBL.jpg', 'categories': [['Books']], 't
+{'asin': '0000143561', 'categories': [['Movies & TV', 'Movies']], 'description': '3Pack DVD set - Italian Classics, Parties and Holidays.', 'title': 'E
+{'asin': '0000037214', 'related': {'also_viewed': ['B00JO8II76', 'B00DGN4R1Q', 'B00E1YRI4C']}, 'title': 'Purple Sequin Tiny Dancer Tutu Ballet Dance Fa
+{'asin': '0000032069', 'title': 'Adult Ballet Tutu Cheetah Pink', 'price': 7.89, 'imUrl': 'http://ecx.images-amazon.com/images/I/51EzU6quNML._SX342_.jp
+{'asin': '0000031909', 'related': {'also_bought': ['B002BZX8Z6', 'B00JHONN1S', '0000031895', 'B00D2K1M3O', '0000031852', 'B00D0WDS9A', 'B00D10CLVW', 'B
+{'asin': '0000032034', 'title': 'Adult Ballet Tutu Yellow', 'price': 7.87, 'imUrl': 'http://ecx.images-amazon.com/images/I/21GNUNIa1CL.jpg', 'related':
+{'asin': '0000589012', 'title': "Why Don't They Just Quit? DVD Roundtable Discussion: What Families and Friends need to Know About Addiction and Recove
+#+END_SRC
+
+** Preprocessing Scripts
+
+it opens ~metadata.json~ and then reads each line for each line it searches for:
+
+#+BEGIN_SRC python
+if ("'title':" in line) and ("'brand':" in line) and ("'categories':" in line):
+#+END_SRC
+
+So it checks whether each of the above is in line and if yes puts them inside variables together with description and categories it's output is ~product.csv~:
+
+#+BEGIN_SRC csv
+Purple Sequin Tiny Dancer Tutu Ballet Dance Fairy Princess Costume Accessory,Big Dreams,,"Clothing, Shoes & Jewelry / Girls / Clothing, Shoes & Jewelry
+Adult Ballet Tutu Cheetah Pink,BubuBibi,,Sports & Outdoors / Other Sports / Dance / Clothing / Girls / Skirts
+Girls Ballet Tutu Neon Pink,Unknown,High quality 3 layer ballet tutu. 12 inches in length,Sports & Outdoors / Other Sports / Dance
+Adult Ballet Tutu Yellow,BubuBibi,,Sports & Outdoors / Other Sports / Dance / Clothing / Girls / Skirts
+Girls Ballet Tutu Zebra Hot Pink,Coxlures,TUtu,Sports & Outdoors / Other Sports / Dance
+Adult Ballet Tutu Purple,BubuBibi,,Sports & Outdoors / Other Sports / Dance / Clothing / Girls / Skirts
+#+END_SRC
+
+So what we see above is ~title,brand,description,categories~ inside products.csv and that was ~parse.py~
+
+Now to the next file to run: ~python normalize.py products.csv~ which normalizes the product data see below the script runs lower casing on all words, and replaces \\n with space.  so the files format is noramlized the output is ~products.normalized.csv~ which is given in turn to the next script.
+
+~products.normalized.csv~:
+
+#+BEGIN_SRC csv
+purple sequin tiny dancer tutu ballet dance fairy princess costume accessory,big dreams,,"clothing, shoes & jewelry / girls / clothing, shoes & jewelry
+adult ballet tutu cheetah pink,bububibi,,sports & outdoors / other sports / dance / clothing / girls / skirts
+girls ballet tutu neon pink,unknown,high quality 3 layer ballet tutu. 12 inches in length,sports & outdoors / other sports / dance
+adult ballet tutu yellow,bububibi,,sports & outdoors / other sports / dance / clothing / girls / skirts
+girls ballet tutu zebra hot pink,coxlures,tutu,sports & outdoors / other sports / dance
+adult ballet tutu purple,bububibi,,sports & outdoors / other sports / dance / clothing / girls / skirts
+#+END_SRC
+
+Next script to be run is: ~python trim.py products.normalized.csv~ this script, removes any unknown brands:
+
+#+BEGIN_SRC python
+if brand == 'unknown' or brand == '' or brand == 'generic':
+                trimmed += 1
+#+END_SRC
+
+So we are left only with known brands.
+
+Next script to run is: ~python supplement.py products.normalized.trimmed.csv~ this script appends the brand name to the title and appends the title to the description, so now all title have brand name inside them see below:
+
+#+BEGIN_SRC python
+        if not (brand in title):
+            supplemented += 1
+            title = brand + ' ' + title
+        description = title + ' ' + description
+#+END_SRC
+
+Next script to run is: ~python tag.py products.normalized.trimmed.supplemented.csv~: it's adding the actual standard ~POS~ (Part Of Speach Tagging) for example ~tagging += 'B-B '~ (Begin Brand) and ~tagging += 'I-B '~ (In Brand) ~tagging += 'O '~ (No Brand).
+
+** Training Scripts 
+
+These are the training scripts to run:
+
+#+BEGIN_SRC bash
+mkdir -p ./models/
+python train_tokenizer.py data/products.normalized.trimmed.supplemented.tagged.csv
+python train_classifier.py data/products.normalized.trimmed.supplemented.tagged.csv
+python train_ner.py data/products.normalized.trimmed.supplemented.tagged.csv
+#+END_SRC
+
+Let's see what they do one by one first: ~python train_tokenizer.py data/products.normalized.trimmed.supplemented.tagged.csv~:
+
+#+BEGIN_SRC 
+from tokenizer import WordTokenizer
+    # Tokenize texts
+    tokenizer = WordTokenizer()
+    tokenizer.train(texts)
+#+END_SRC
+
+Well it's calling ~.train(texts~ According to documentation ~.train~ does:
+
+#+BEGIN_QUOTE
+Takes a list of texts, fits a tokenizer to them, and creates the embedding matrix.
+#+END_QUOTE
+
+What is ~embeeding~? Let's google for it:
+
+#+BEGIN_QUOTE
+Word embeeding is an improvement over traditional bag of words model encoding where large sparse vectors were used to represent each word, in word embeeding the the position of a word within the vector space is learned fro text, examples ~Word2Vec~ ~GloVe~
+#+END_QUOTE
+
+Therefore the tokenizer creates and embeeding matrix, so the output of the tokenizer is a vector space containing a representation of the words in our products.
+
+To the next script: ~python train_classifier.py data/products.normalized.trimmed.supplemented.tagged.csv~ this script:
+
+#+BEGIN_QUOTE
+trains a product category classifier based on product titles and descriptions
+#+END_QUOTE
+
+So here we want to extract the product category! it's utilizing ~classifier.py~ which in turn:
+
+1. Takes as input ~data (np.array): 2D array representing descriptions of the product and/or product title~
+1. And its output: ~list(dict(str, float)): List of dictionaries of product categories with associated confidence~
+
+How does it do it? It trains a model, after all we have labels we have categories in our data, so we can train a model.
+
+#+BEGIN_SRC plantuml :file train-classifier.png
+@startuml
+
+left to right direction
+
+title Train Product Labels Classifier
+
+[Product Reviews with Categories] as CSV
+[Labels] as LB
+[Products] as PD
+[GloVe] as GL
+[Word Embeeding] as WE
+[Network] as NW
+[models/classifier.h5] as CP
+CSV --> LB : Extract
+CSV --> PD : Extract
+PD --> WE : Compile Network
+LB --> NW : Train 
+WE --> NW : Train
+GL --> NW : Train
+NW --> CP : Predict
+
+@enduml
+#+END_SRC
+#+results:
+[[file:train-classifier.png]]
+
+The output is the model create at ~models/classifier.h5~ and it prints the summary below (according results and estimation according to cross validation):
+
+
+In code it looks as following: ~preds = Dense(len(self.category_map), activation='softmax')(x)~
+
+This is the activation for the model (so I read not that I get what it means) is ~softmax~ and from what I read this is the ~activation~ function that is used in the output layer, softmax is used when we have multiple classes to predict.
+
+Other possible output functions
+
+1. linear - Linear Regression
+1. sigmoid - Binary Classificatoin
+1. softmax - (this is the one we use) is for multi class classification and this is indeed our problem.
+
+Then it compiles the model and it's using following loss function:
+
+#+BEGIN_SRC python
+self.model.compile(loss='categorical_crossentropy',
+                           optimizer='rmsprop',
+                           metrics=['acc'])
+#+END_SRC
+
+As we both read the loss function is: ~'categorical_crossentropy~ which I have no idea which function exactly that is, but this is the loss function that it's using, and the optimization algoritm is ~rmsprop~ an alternative optimization algorithm could be ~sgd~ which is the Stochastic Gradient Descend this time we will go on with ~rmsprop~ which according ot documentation ~rmsprop:	Divide	the	learning	rate	for	a	weight	by	a	running	average	of	the	 magnitudes	of	recent	gradients	for	that weight.– This	is	the	mini-batch	version	of	just	using	the	sign	of	the	gradient.~
+
+
+
+#+BEGIN_SRC shell
+
+# Train a product category classifier based on product titles and descriptions
+
+Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn_for)
+                           precision    recall  f1-score   support
+
+clothing, shoes & jewelry   0.768944  0.683034  0.723448      7250
+        sports & outdoors   0.697127  0.700144  0.698632     18022
+             toys & games   0.744507  0.877790  0.805673     21193
+              movies & tv   0.863326  0.819637  0.840914      2312
+                     baby   0.556271  0.666802  0.606542      2461
+ tools & home improvement   0.772414  0.678099  0.722190     17698
+               automotive   0.871059  0.887794  0.879347     26389
+           home & kitchen   0.727050  0.802991  0.763136     16649
+    arts, crafts & sewing   0.769580  0.631638  0.693819      5367
+          office products   0.678700  0.756802  0.715626      7204
+                    books   0.000000  0.000000  0.000000        21
+ office & school supplies   0.000000  0.000000  0.000000       109
+              electronics   0.752167  0.875671  0.809234     13971
+                computers   0.000000  0.000000  0.000000        31
+cell phones & accessories   0.910150  0.808887  0.856536      2993
+             pet supplies   0.891313  0.773756  0.828384      5967
+   health & personal care   0.708116  0.680906  0.694244     15146
+              cds & vinyl   0.726473  0.795404  0.759377      1349
+      musical instruments   0.866925  0.762178  0.811184      4701
+                 software   0.000000  0.000000  0.000000        37
+  industrial & scientific   0.441718  0.031115  0.058135      2314
+               all beauty   0.000000  0.000000  0.000000       259
+              video games   0.000000  0.000000  0.000000        63
+                   beauty   0.817036  0.910148  0.861082     14101
+     patio, lawn & garden   0.782244  0.611744  0.686567      5790
+   grocery & gourmet food   0.873358  0.879315  0.876327      7184
+          all electronics   0.000000  0.000000  0.000000        79
+            baby products   0.594203  0.093394  0.161417       439
+         kitchen & dining   0.000000  0.000000  0.000000        96
+          car electronics   0.000000  0.000000  0.000000        11
+            digital music   0.000000  0.000000  0.000000       111
+         home improvement   0.000000  0.000000  0.000000       117
+           amazon fashion   0.546512  0.129121  0.208889       364
+               appliances   0.000000  0.000000  0.000000        16
+           camera & photo   0.000000  0.000000  0.000000         3
+         purchase circles   0.000000  0.000000  0.000000        12
+         gps & navigation   0.000000  0.000000  0.000000        15
+mp3 players & accessories   0.000000  0.000000  0.000000        23
+  collectibles & fine art   0.000000  0.000000  0.000000       103
+            luxury beauty   0.000000  0.000000  0.000000        12
+         furniture & dcor   0.000000  0.000000  0.000000        17
+                            0.000000  0.000000  0.000000         1
+
+              avg / total   0.766003  0.772215  0.763889    200000
+
+
+real	326m7.851s
+user	475m9.852s
+sys	25m13.631s
+
+
+#+END_SRC
+
+
+** Demo
+
+https://angular-p6yyuv.stackblitz.io
+
 * Paper Summary - Attribute Extraction from Product Titles in eCommerce
 With no syntactic structure in product titles it's a challening problem.  In this paper he concentrates on brand NER extraction.
 
@@ -746,6 +1003,66 @@ product titles do not conform to a syntactical structure or grammar unlike news 
 So maybe apply rule based to product description and not only title? but what if description refers to competitors?
 
 Creating a maintaining rules of hundreds or thousands of attributes is challenging.  *Smells like machine learnig models are needed.*
+
+*** Supervised text classification
+With bayes or SVM or logistic regression. According to the paper these methods can be suitable when the number of classes is known and small.  It adds the following:
+
+#+BEGIN_QUOTE
+ In contrast, when the number of classes is in tens of thousands, we will need a lot labeled training data and the model footprint will also be large. However, the main drawback with these models for attributes like brand and manufacturer part number is that they can only predict classes on which they are trained. Thus, in order to predict new brand values, the training data will need to be constantly updated with labeled data corresponding to new brands. In the case of manufacturer part number, this approach is essentially worthless since every new product will likely have an unseen part number
+#+END_QUOTE
+
+** Sequence Labeling Approaches
+
+The paper moves on to the way its going to extract the features and values of products its under the category of "Sequence Labeling Approaches".  While we talk about sequences a mini google search about what "Sequence Labeling Means" yields the following informative description:
+
+#+BEGIN_QUOTE
+Often we deal with sets in applied machine learning such as a train or test sets of samples.
+
+Each sample in the set can be thought of as an observation from the domain.
+
+In a set, the order of the observations is not important.
+
+A sequence is different. The sequence imposes an explicit order on the observations.
+
+The order is important. It must be respected in the formulation of prediction problems that use the sequence data as input or output for the model.
+#+END_QUOTE
+
+[[https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2017/07/Example-of-a-Sequence-Prediction-Problem.png]]
+
+And according to: "— Sequence Learning: From Recognition and Prediction to Sequential Decision Making, 2001.":
+
+#+BEGIN_QUOTE
+Sequence prediction attempts to predict elements of a sequence on the basis of the preceding elements
+#+END_QUOTE
+
+For example given a sequence of previous weather temprature predict the following days weather temprature.
+
+Note also that sequence generation can generate *Novel Sequences* for example generate music!
+
+They then give an example of a feature function, a feature function assigns for word ~x~ label-sequence ~y~ at index ~i~ (not product type yet) for example ofor POS (Part Of Speech Tagging).  Here is the example function
+
+We have a labeled sequence for each word x_i we have a label y_i and we want a feature function.
+
+\begin{equation}
+f(x,y,i) =
+\begin{cases}
+  1\ if \ x_i = the\ and\ y_i\ =\ DT\\
+  0\ otherwise
+\end{cases}
+\end{equation}
+
+Meaning, for word with index ~i~ we tag it with ~y~ part of speech if the word ~x_i~ is ~the~ and the label sequence ~y_i~ is ~DT~ (determinent POS) so the output of the feature function is either 0 or 1 for each word.
+
+*Creating the training set*  
+
+To create the training set the paper mentiones that instead of manually labeling they created a set of regular expressions which catched exact brand names, this also limited the noise because they didn't catch errors (at least they think).  They have added product titles which did not have any brand-name so that they have also labeled training set without any brands.
+
+*** Interpreting output labels
+
+Their function currently: ~output_labels = learning_algorithm(product-title-x): Seq[(Token, Label)]~ Meaning if they apply their learning algorithm they get a sequence of each of the tokens in the product title and for each the learning algorithm assigned a label.
+
+Now they need to transform this labeling into candidate brand name.  ~toBrand(Seq[(Token, Label)]: BrandName~ and they do tihs not surprisingly by looking for the "Brand" label in the branded tokens..
+
 * Sentence Compression
 
 While googling some more I've noticed there is another approach to text summarization called: "Sentence Compression", this approach is more compelling for me because from all the search results I get it looks like a fully automatic process (except for training).
@@ -789,13 +1106,18 @@ References:
 | Google AI Portal                                                | https://ai.google                                                               |
 | Text Summarization Thesis                                       | https://tinyurl.com/text-summarization-thesis                                   |
 | Text Compression Deletion Impl based on Katja Filippova Paper   | https://github.com/zhaohengyang/Generate-Parallel-Data-for-Sentence-Compression |
+| Katja Filippova Multi Sentence Compression Paper                | http://www.aclweb.org/anthology/C10-1037                                        |
 | Overcoming the Lack of Parallel Data in Sentence Compression    | https://www.aclweb.org/anthology/D/D13/D13-1155.pdf                             |
 | Toward Data Science NER                                         | https://tinyurl.com/towarddatascience-ner                                       |
 | Wallmart Ajinkya Product Attributes                             | https://tinyurl.com/ajnkya-product-attributes                                   |
 | Wallmart Ajinkya Product Attributes Paper                       | https://arxiv.org/pdf/1608.04670.pdf                                            |
 | Current state of NLP Summarization                              | https://github.com/sebastianruder/NLP-progress/blob/master/summarization.md     |
 | Current state of NLP                                            | https://github.com/sebastianruder/NLP-progress                                  |
-|                                                                 |                                                                                 |
+|-----------------------------------------------------------------+---------------------------------------------------------------------------------|
+
+* Summary
+
+We have seen there are existing methods and github repositories and papers for summarizing text, for sentence compression, for identify topic based on product title and description and for producing summarization based on NER, the future looks both interesting and promising, but also very difficult.
 
 * Ideas
 extraction can also be good for us we just extract text
@@ -806,6 +1128,8 @@ extraction can also be good for us we just extract text
 | Machine Learning Mastery Text Summarization | https://machinelearningmastery.com/?s=text+summarization&submit=Search   |
 | Identify Article Topic with keras           | https://medium.com/skyshidigital/getting-started-with-keras-624dbf106c87 |
 |                                             |                                                                          |
+
+* 
 
 * Ready made models
 ** https://github.com/tensorflow/models/tree/master/research/textsum
