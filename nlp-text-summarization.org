@@ -8,15 +8,18 @@
 2. Why such naive implementation works very partially.
 3. The 3 main methods for text summarization
 3.1 **Text Summarization** Summarize a blokc of text, a brief overview of techniques (from published paper).
+
 3.2 **Sentence Compression** This one aims to compress a single sentence.
+
 3.3 **NER based summarization** Look at the entities of the text (price, brand, product) and summarize by it.
-1. Extractive text summarizer vs sematic summarizer.
-1. Run code to identify the topic of a text and brand with deep learning. (online demo available).
-1. Run code to summarize multiple sentences with takehe github project.
-1. How wallmarts handles attributes extraction from products titles in eCommerce.
-1. Run code that extracts common NER's (brand, money, location) from a sentence.
-1. What SumBasic is
-1. Have plenty of resources and directions to continue from here.
+
+4. Extractive text summarizer vs sematic summarizer.
+5. Run code to identify the topic of a text and brand with deep learning. (online demo available).
+6. Run code to summarize multiple sentences with takehe github project.
+7. How wallmarts handles attributes extraction from products titles in eCommerce.
+8. Run code that extracts common NER's (brand, money, location) from a sentence.
+9. What SumBasic is
+10. Have plenty of resources and directions to continue from here.
 
 
 Here are some of the examples we are going to go through:
