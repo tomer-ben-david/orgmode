@@ -55,16 +55,21 @@ So we want to understand text summarization / sentence compression / NER based s
 
 I always find that in any topic I study the jargon/taxonomy/terminology is one of the most important things to know so here it is:
 
-|------------------------+--------------------------------------------------------------------------------------------------------------------------|
-| Term                   | Description                                                                                                              |
-|------------------------+--------------------------------------------------------------------------------------------------------------------------|
-| Text Summarization     | Computer creating meaninful summaries of text                                                                            |
-| Sentence Compression   | Take a large sentence(or few) and compress                                                                               |
-| Google knowledge graph | A enhancement to search where it shows informative data on right panel for search results                                |
-|                        | ex. [[https://www.google.com/intl/es419/insidesearch/features/search/assets/img/snapshot.jpg]]                               |
-| Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing                         |
-|                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their | NLG                    | Natural Language Generation                                                                                              |
-|                        |                                                                                                                          |
+|------------------------+--------------------------------------------------------------------------------------------------|
+| Term                   | Description                                                                                      |
+|------------------------+--------------------------------------------------------------------------------------------------|
+| Text Summarization     | Computer creating meaninful summaries of text                                                    |
+| Sentence Compression   | Take a large sentence(or few) and compress                                                       |
+| NER                    | Named Entity Recognition (Price, Brand, Geo)                                                     |
+| Google knowledge graph | A enhancement to search where it shows informative data on right panel for search results        |
+| Extractive Summary     | A summary which is solely built from extraction of words and snippets from text                  |
+| Abstractive Summary    | A summary which involves not nessesaraly only items from text, involves understanding the text   |
+|                        | ex. [[https://www.google.com/intl/es419/insidesearch/features/search/assets/img/snapshot.jpg]]       |
+| Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing |
+|                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their                  |
+| NLG                    | Natural Language Generation                                                                      |
+|------------------------+--------------------------------------------------------------------------------------------------|
+
 
 
 * Introduction
@@ -1117,6 +1122,7 @@ References:
 | Wallmart Ajinkya Product Attributes Paper                       | https://arxiv.org/pdf/1608.04670.pdf                                            |
 | Current state of NLP Summarization                              | https://github.com/sebastianruder/NLP-progress/blob/master/summarization.md     |
 | Current state of NLP                                            | https://github.com/sebastianruder/NLP-progress                                  |
+| Google Search Transform Text To Human Readable                  | https://tinyurl.com/search-transform-human-readabl                                                                                |
 |-----------------------------------------------------------------+---------------------------------------------------------------------------------|
 
 * Summary
