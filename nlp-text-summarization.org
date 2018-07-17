@@ -1122,7 +1122,20 @@ References:
 | Wallmart Ajinkya Product Attributes Paper                       | https://arxiv.org/pdf/1608.04670.pdf                                            |
 | Current state of NLP Summarization                              | https://github.com/sebastianruder/NLP-progress/blob/master/summarization.md     |
 | Current state of NLP                                            | https://github.com/sebastianruder/NLP-progress                                  |
-| Google Search Transform Text To Human Readable                  | https://tinyurl.com/search-transform-human-readabl                                                                                |
+| Google Search Transform Text To Human Readable                  | https://tinyurl.com/search-transform-human-readabl                              |
+| Google Search Stanford NLP Extract From Title                   | https://tinyurl.com/stanford-nlp-extract-product-d                              |
+| Google Search Product NER                                       | https://tinyurl.com/google-search-product-ner                                   |
+| ROBUST TREE-STRUCTURED NAMED ENTITIES RECOGNITION FROM SPEECH   | http://www.irisa.fr/texmex/people/raymond/pub/icassp2013.pdf                    |
+| An Extractive Text Summarizer Based on Significant Words        | https://tinyurl.com/extractive-words-summary                                    |
+| Google Scholar Textu Summarization                              | https://tinyurl.com/google-scholar-text-summarizat                              |
+| Text Summarization on HackerNews                                | https://tinyurl.com/text-summarization-hn                                       |
+| Online Web Scrapper                                             | http://webscraper.io/                                                           |
+| Awesome Training Data                                           | https://tinyurl.com/google-search-awesome-training                              |
+| Awesome Public Data Sets                                        | https://github.com/awesomedata/awesome-public-datasets                          |
+| Kaggle Text Summarization                                       | https://tinyurl.com/kaggle-text-summarization                                   |
+| Awesome Text Summarization                                      | https://github.com/icoxfog417/awesome-text-summarization                        |
+| NLTK scikit tensorflow text summarization                       | https://tinyurl.com/nltk-scikit-tensorflow-text-su                                                                                |
+
 |-----------------------------------------------------------------+---------------------------------------------------------------------------------|
 
 * Summary
