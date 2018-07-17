@@ -4,7 +4,7 @@
 
 * CheatSheet
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| *command*                                                                              | description                                                                           |
+| command                                                                                | description                                                                           |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 | ~conda create --name testenv~                                                          |                                                                                       |
 | ~conda activate testenv~                                                               |                                                                                       |
@@ -17,7 +17,7 @@
 | ~requests.get('http://someurl.csv`)~                                                   | import requests very convinient for data download                                     |
 | ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~                | read log file to string                                                               |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| *Load csv and files*                                                                   |                                                                                       |
+| Load csv and files                                                                     |                                                                                       |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 | ~import csv; numpy.array(list(csv.reader(open(filename), 'rt'), delimeter=',')).shape~ | Read csv with standard python                                                         |
 | ~numpy.loadtxt(open(filename,'r'), delimeter(',')).shape~                              | Load csv with NumPy                                                                   |
@@ -58,17 +58,8 @@
 | **Alexa**                                                                              |                                                                                       |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 |                                                                                        |                                                                                       |
-* Data
-** Spreadsheet
-Think of data as a spreadsheet as a table.
-** Matrix
-rows: observations, our datadata. columns - features.  Get used to it.
 
-*** Sparse matrix
-
-matrix who's most rows are zeros
-
-* Learning
+* Theory 
 
 |-------------------------------------------+--------------------------------------------------------------------|
 | Item                                      | Description                                                        |
@@ -79,6 +70,15 @@ matrix who's most rows are zeros
 | ~Hyperparameters~                         | Learning rate for SGD, Model Size.                                 |
 |                                           |                                                                    |
 |-------------------------------------------+--------------------------------------------------------------------|
+** Data
+*** Spreadsheet
+ Think of data as a spreadsheet as a table.
+*** Matrix
+ rows: observations, our datadata. columns - features.  Get used to it.
+
+**** Sparse matrix
+
+ matrix who's most rows are zeros
 ** Types
 *** Statistical
 
@@ -111,7 +111,6 @@ Some can be with a teacher
 *** Classification vs Regression
 
 classification(input) => spam/notspam (categorical)<br />regression(input) => bitcoin price (continous outcome)
-
 ** Errors
 *** Error Y=f(x) + e
 
@@ -124,7 +123,13 @@ Bias Error (model assumptions), Variance Error, Irreducable Error. Increasing bi
 *** Overfitting
 
 Resampling to estimate model accuracy, Hold back validation dataset, Cross validation.
+** Gradiant Descent
 
+Almost every machine learning algorithm uses optimisation at it's core, optimising the target function.  Local minimum.  start with 0 `coefficient = 0.0`.  `cost = evaluate(f(coefficient))`.  Update coefficient downhill with derivative.  `coefficient = coefficient - (alpha * delta)`.  alpha learning parameter.
+
+*** Stochastic Gradiant Descent
+
+Have large amounts of data, update to coefficients is for each training instance, not in batch, as we have random data we move quickly.
 * Map reduce
 
 #+BEGIN_SRC bash
@@ -141,14 +146,6 @@ List(input) => List(output) * => like grep
 ** Reduce
 
 List(input) => Output(value) * => like wc -l
-* Algorithms
-** Gradiant Descent
-
-Almost every machine learning algorithm uses optimisation at it's core, optimising the target function.  Local minimum.  start with 0 `coefficient = 0.0`.  `cost = evaluate(f(coefficient))`.  Update coefficient downhill with derivative.  `coefficient = coefficient - (alpha * delta)`.  alpha learning parameter.
-
-*** Stochastic Gradiant Descent
-
-Have large amounts of data, update to coefficients is for each training instance, not in batch, as we have random data we move quickly.
 * Hadoop
 ** Install
    
@@ -751,83 +748,83 @@ then add /Users/tomer.bendavid/.local/bin to PATH on bash_profile
 1. for default reigon i entered `us-east-1`
 ```
 
-* python
-* urllib2
+* Python
+** urllib2
 
-*** getfile
+**** getfile
 
-```python
-import urllib.request
-url = "http://www.cs.tufts.edu/comp/116/access.log"
-accesslog =  urllib.request.urlopen(url).read().decode('utf-8')
-print("accesslog: " + accesslog)
-```
+ ```python
+ import urllib.request
+ url = "http://www.cs.tufts.edu/comp/116/access.log"
+ accesslog =  urllib.request.urlopen(url).read().decode('utf-8')
+ print("accesslog: " + accesslog)
+ ```
 
-** matplotlib
+*** matplotlib
 
-** pandas
+*** pandas
 
-```python
-from pandas import read_csv
-```
+ ```python
+ from pandas import read_csv
+ ```
 
-*** data
+**** data
 
-**** 
-pandas.read_csv
+***** 
+ pandas.read_csv
 
-```python
-url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
-names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'class']
-dataset = pandas.read_csv(url, names=names) *name is the above name for columns.
-```
+ ```python
+ url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+ names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'class']
+ dataset = pandas.read_csv(url, names=names) *name is the above name for columns.
+ ```
 
-**** 
-dataset.shape
+***** 
+ dataset.shape
 
-**** 
-dataset.head(20)
+***** 
+ dataset.head(20)
 
-**** 
-dataset.describe()
+***** 
+ dataset.describe()
 
-**** print(dataset.groupby('class').size())
+***** print(dataset.groupby('class').size())
 
-**** pandas.set_option('expand_frame_repr', False)
+***** pandas.set_option('expand_frame_repr', False)
 
-Don't break table output when printing like with `.head()` to new lines, all in one line, wide table.
+ Don't break table output when printing like with `.head()` to new lines, all in one line, wide table.
 
-*** plot
+**** plot
 
-**** dataset.plot(kind='box', subplots=True, layout=(2,2), sharex=False, sharey=False)
+***** dataset.plot(kind='box', subplots=True, layout=(2,2), sharex=False, sharey=False)
 
-**** dataset.hist()
+***** dataset.hist()
 
-**** scatter_matrix(dataset)
+***** scatter_matrix(dataset)
 
-plt.show()
+ plt.show()
 
-*** build model
+**** build model
 
-**** validation dataset
+***** validation dataset
 
-seperate out validation dataset.
-80% for data, 20% for validation.
+ seperate out validation dataset.
+ 80% for data, 20% for validation.
 
-```python
-* Split-out validation dataset
-array = dataset.values
-X = array[:,0:4]
-Y = array[:,4]
-validation_size = 0.20
-seed = 7
-X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
-```
+ ```python
+** Split-out validation dataset
+ array = dataset.values
+ X = array[:,0:4]
+ Y = array[:,4]
+ validation_size = 0.20
+ seed = 7
+ X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
+ ```
 
-**** cross validation
+***** cross validation
 
-10 fold cross validation for accuracy.
-```python
+ 10 fold cross validation for accuracy.
+ ```python
 * Test options and evaluation metric
 seed = 7
 scoring = 'accuracy'
@@ -930,5 +927,4 @@ avg / total       0.90      0.90      0.90        30
 
 **** https://machinelearningmastery.com/machine-learning-in-python-step-by-step/
 
-* Amazon
   
