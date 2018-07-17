@@ -4,7 +4,7 @@
 
 * CheatSheet
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| command                                                                                | description                                                                           |
+| *command*                                                                              | description                                                                           |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 | ~conda create --name testenv~                                                          |                                                                                       |
 | ~conda activate testenv~                                                               |                                                                                       |
@@ -17,7 +17,7 @@
 | ~requests.get('http://someurl.csv`)~                                                   | import requests very convinient for data download                                     |
 | ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~                | read log file to string                                                               |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| Load csv and files                                                                     |                                                                                       |
+| *Load csv and files*                                                                   |                                                                                       |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 | ~import csv; numpy.array(list(csv.reader(open(filename), 'rt'), delimeter=',')).shape~ | Read csv with standard python                                                         |
 | ~numpy.loadtxt(open(filename,'r'), delimeter(',')).shape~                              | Load csv with NumPy                                                                   |
