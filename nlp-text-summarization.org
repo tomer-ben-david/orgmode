@@ -68,6 +68,7 @@ I always find that in any topic I study the jargon/taxonomy/terminology is one o
 | Ontology               | Doamin specific information: "The ontologies on the Web range from large taxonomies categorizing |
 |                        | Web sites (such as on Yahoo!) to categorizations of products for sale and their                  |
 | NLG                    | Natural Language Generation                                                                      |
+| Word Embeeding                            | Vectorizing words, word2vec, GLoVE, solves sparse matrix, uses context |
 |------------------------+--------------------------------------------------------------------------------------------------|
 
 
