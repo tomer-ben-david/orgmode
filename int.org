@@ -247,6 +247,27 @@
 | **java8**            |                                                                                                                   |
 |                      |                                                                                                                   |
 | lambda               | interface with single abstract method (can have in addition static,default), parameters, return type match lambda |
+| Expressions          | ~(parameters) -> expression                  e.g.        (int x, int y) -> x + y~                                 |
+|                      | ~(parameters) -> statement                   e.g.        () -> System.out.println("hi " + s)~                     |
+|                      | ~(parameters) -> { statements }              e.g.        (String s) -> { int n = s.length(); return n; }~         |
+|                      | ~Runnable r = () -> System.out.println("Hello!");~                                                                |
+|                      | ~Collections.sort(persons, (p1, p2) -> p1.name.compareTo(p2.name));~                                              |
+|                      | ~Callable<String> callable = () -> s;~                                                                            |
+|                      |                                                                                                                   |
+|                      |                                                                                                                   |
+| Method Reference     | ~Class::staticMethod                         e.g.        Arrays.sort(items, Util::compareItems);~                 |
+|                      | ~instance::instanceMethod                    e.g.        items.forEach(System.out::print);~                       |
+|                      |                                                                                                                   |
+| Default methods      | ~interface Descriptive { default String describe() { return "fantastic"~                                          |
+|                      |                                                                                                                   |
+| One liner REST       | Rapidoid: ~On.get("/size").json((String msg) -> msg.length());~                                                   |
+|                      |                                                                                                                   |
+| Streams              | ~Arrays.asList("a", "", "b", "", "c").stream().filter(x -> !x.isEmpty()).count();~                                |
+|                      | ~Arrays.asList("A", "bbb", "CC", "dd").stream()..map(String::toUpperCase)..collect(Collectors.joining(":"));~     |
+|                      | ~Arrays.asList(10, 3, 2, 5, 9, 4).stream().mapToInt(x -> x).summaryStatistics()~                                  |
+|                      |                                                                                                                   |
+|                      |                                                                                                                   |
+| Resources            | http://www.java8.org/                                                                                             |
 |                      |                                                                                                                   |
 | **JVM**              |                                                                                                                   |
 |                      |                                                                                                                   |
