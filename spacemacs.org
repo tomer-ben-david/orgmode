@@ -1,9 +1,23 @@
 #+TITLE: Spacemacs and orgmode
 
 * SpaceMacs
+** CheanSheel
+|-----------+-------------------------|
+| command   | explain                 |
+|-----------+-------------------------|
+| *window*  | windows and buffers     |
+|-----------+-------------------------|
+| ~SPC w -~ | Split window vertically |
+| ~SPC w /~ | Split Horizontally      |
+| ~SPC TAB~ | Switch Buffer           |
+|           |                         |
+|-----------+-------------------------|
 ** Installation 
    1. `brew cask install basictex` - so can export presentations.
    ~dotspacemacs-additional-packages '(vimish-fold htmlize)~ - Add packages to install on startup. 
+** Navigation
+   1. ~SPC j i~ - Move between headers.
+   1. ~C-g~ - Escape / Quit
 ** OrgMode
 
 |------------+---------------------|
@@ -102,9 +116,6 @@ for i in range(100):
 
 #+END_SRC
 *** `SPC SPC eshell` Shell 
-** Navigation
-   1. ~SPC j i~ - Move between headers.
-   1. ~C-g~ - Escape / Quit
 ** View
    1. `SPC z x` +- # => zoom in out
 ** Packages

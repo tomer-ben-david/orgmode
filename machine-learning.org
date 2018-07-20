@@ -3,27 +3,35 @@
 #+STARTUP: inlineimages
 
 * CheatSheet
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| command                                                                                | description                                                                           |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~conda create --name testenv~                                                          |                                                                                       |
-| ~conda activate testenv~                                                               |                                                                                       |
-| ~conda env list~                                                                       |                                                                                       |
-| ~conda installs spyder~                                                                |                                                                                       |
-| ~conda activate testenv~                                                               |                                                                                       |
-| ~conda install -c conda-forge pyspark~                                                 | install pyspark                                                                       |
-| ~/Users/tomer.bendavid/anaconda3/envs/testenv1/bin/python3.6~                          | python interpreter for intellij spyder when using anaconda                            |
-| ~/Users/tomer.bendavid/anaconda3/bin/python~                                           | Soft link i think points to current python                                            |
-| ~requests.get('http://someurl.csv`)~                                                   | import requests very convinient for data download                                     |
-| ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~                | read log file to string                                                               |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| Load csv and files                                                                     |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~import csv; numpy.array(list(csv.reader(open(filename), 'rt'), delimeter=',')).shape~ | Read csv with standard python                                                         |
-| ~numpy.loadtxt(open(filename,'r'), delimeter(',')).shape~                              | Load csv with NumPy                                                                   |
-| ~numpy.loadtxt(urlopen('http://...'), delimeter=',').shape~                            | Load csv from URL                                                                     |
-| ~pandas.read_csv(filename, names=['col1','col2']).shape~                               | Load csv with Pandas                                                                  |
-| ~pandas.read_csv(url, names=['col1', 'col2']).shape~                                   | Load csv from URL with Pandas                                                         |
+** Anaconda
+|-------------------------------------------------------------------------+------------------------------------------------------------|
+| command                                                                 | description                                                |
+|-------------------------------------------------------------------------+------------------------------------------------------------|
+| ~conda create --name testenv~                                           |                                                            |
+| ~conda activate testenv~                                                |                                                            |
+| ~conda env list~                                                        |                                                            |
+| ~conda env remove -n testenv3~                                          |                                                            |
+| ~conda installs spyder~                                                 |                                                            |
+| ~conda activate testenv~                                                |                                                            |
+| ~conda install -c conda-forge pyspark~                                  | install pyspark                                            |
+| ~/Users/tomer.bendavid/anaconda3/envs/testenv1/bin/python3.6~           | python interpreter for intellij spyder when using anaconda |
+| ~/Users/tomer.bendavid/anaconda3/bin/python~                            | Soft link i think points to current python                 |
+| ~requests.get('http://someurl.csv`)~                                    | import requests very convinient for data download          |
+| ~urllib.request.urlopen('http://something.log').read().decode('utf-8')~ | read log file to string                                    |
+|-------------------------------------------------------------------------+------------------------------------------------------------|
+
+** CSV / Files
+|----------------------------------------------------------------------------------------+-------------------------------|
+| Load csv and files                                                                     |                               |
+|----------------------------------------------------------------------------------------+-------------------------------|
+| ~import csv; numpy.array(list(csv.reader(open(filename), 'rt'), delimeter=',')).shape~ | Read csv with standard python |
+| ~numpy.loadtxt(open(filename,'r'), delimeter(',')).shape~                              | Load csv with NumPy           |
+| ~numpy.loadtxt(urlopen('http://...'), delimeter=',').shape~                            | Load csv from URL             |
+| ~pandas.read_csv(filename, names=['col1','col2']).shape~                               | Load csv with Pandas          |
+| ~pandas.read_csv(url, names=['col1', 'col2']).shape~                                   | Load csv from URL with Pandas |
+|----------------------------------------------------------------------------------------+-------------------------------|
+
+** Pandas DataFrame
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
 | **pandas**                                                                             | parse-log.py                                                                          |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
@@ -40,24 +48,30 @@
 | ~pandas.set_option('max_columns',10)~                                                  | spyder and pandas columns width more columns                                          |
 | ~df.corr()~                                                                            | Correlation between all columns                                                       |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| **plotting**                                                                           |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ~df.hist()~                                                                            | show panda histogram on all columns                                                   |
-| ~plt.plot(arr); plt.xlabel('x label'); plt.show()~                                     | Line plot                                                                             |
-| ~plt.scatter(x,y)~                                                                     | Scatter plot                                                                          |
-| ~                                                                                      |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| **Hadoop**                                                                             |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| ResourceManager                                                                        | Single Service in entire cluster runs on one of the master nodes                      |
-| ApplicationMaster                                                                      | One for each application run on cluster runs on master                                |
-| SequenceFile                                                                           | Splittable file format list of keys/values                                            |
-| Secondary NameNode                                                                     | No HA, CheckPoint node, fast recovery of master node for journal fs image             |
-|                                                                                        |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-| **Alexa**                                                                              |                                                                                       |
-|----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------|
-|                                                                                        |                                                                                       |
+
+** Plotting
+
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+| **plotting**                                               |                                                                           |
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+| ~import matplotlib.pyplot as plt; import numpy as np~      |                                                                           |
+| ~x = np.arange(0.0, 2.0, 0.01); y = x**2; plt.plot(x, y);~ | range of numbers and then plot.                                           |
+| ~df.hist()~                                                | show panda histogram on all columns                                       |
+| ~plt.plot(arr); plt.xlabel('x label'); plt.show()~         | Line plot                                                                 |
+| ~plt.scatter(x,y)~                                         | Scatter plot                                                              |
+| ~                                                          |                                                                           |
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+| **Hadoop**                                                 |                                                                           |
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+| ResourceManager                                            | Single Service in entire cluster runs on one of the master nodes          |
+| ApplicationMaster                                          | One for each application run on cluster runs on master                    |
+| SequenceFile                                               | Splittable file format list of keys/values                                |
+| Secondary NameNode                                         | No HA, CheckPoint node, fast recovery of master node for journal fs image |
+|                                                            |                                                                           |
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+| **Alexa**                                                  |                                                                           |
+|------------------------------------------------------------+---------------------------------------------------------------------------|
+|                                                            |                                                                           |
 
 * Theory 
 
