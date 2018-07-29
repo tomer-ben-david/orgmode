@@ -618,7 +618,10 @@ implicit val writesMutableListBuffer: Writes[ListBuffer[(String, mutable.ListBuf
   json.asInstanceOf[JsObject].fields(0)._1
 
 #+END_SRC
+* Ubuntu
+| shortcut                            | desc                                                                |
+| ~sudo apt install gnome-tweak-tool~ | install to remove alt-shift from keyboard shortcut then run ~tweak~ |
+|                                     |                                                                     |
 * Status
 ** TODO quick sort [[https://repl.it/@TomerBen1/KLargestElement][Quick Sort Code]]
 ** TODO [[http://www.ardendertat.com/2011/10/27/programming-interview-questions-10-kth-largest-element-in-array/][Arden K Largest Element]]
-
