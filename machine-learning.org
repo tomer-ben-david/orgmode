@@ -86,13 +86,13 @@
 |-------------------------------------------+--------------------------------------------------------------------|
 ** Statistics Theory
 *** Hypothesis Testing
-Card game exapmle: How many cards you guess right out of 10, for normal person it's 8
+Card game exapmle: How many cards you guess right out of 10, for normal person it's 6
 |--------------------------------+------------------------------------------------------------------------------------------------------------|
 | Term                           | Description                                                                                                |
 |--------------------------------+------------------------------------------------------------------------------------------------------------|
 | ~H0~                           | Status Quo, all as usual We reject it or fail to reject it, We test it                                     |
 | ~t-statistic~                  | ~t-statistic(normalValue): thresholdValue~ ex. normal guesses 6, so 8 could be a t-statistic large enough. |
-| ~p-value~                      | ~p-value(experimentValue) = prob(experimentValue is due to change)~ under assumption H0 is true.           |
+| ~p-value~                      | ~p-value(experimentValue) = prob(experimentValue is due to chance)~ under assumption H0 is true.          |
 | ~alpha~ == ~signifiance level~ | ~prop(type-I-error)~                                                                                       |
 | ~repeat~                       | Repeat experiment 10 times                                                                                 |
 | ~p-value >? ~significce level~ | Yes => Reject H0, No: Fail to reject H0                                                                    |
